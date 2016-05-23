@@ -167,9 +167,7 @@
                             <wsdlOptions>
                                 <wsdlOption>
                                     <wsdl>${basedir}/src/main/resources/wsdl/ec/PaPerNodo.wsdl</wsdl>
-                                    <wsdl>${basedir}/src/main/resources/wsdl/ec/NodoPerPa.wsdl</wsdl>
                                     <wsdl>${basedir}/src/main/resources/wsdl/psp/PspPerNodo.wsdl</wsdl>
-                                    <wsdl>${basedir}/src/main/resources/wsdl/psp/NodoPerPsp.wsdl</wsdl>
                                 </wsdlOption>
                             </wsdlOptions>
                         </configuration>
