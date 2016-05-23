@@ -1,4 +1,4 @@
-package it.gianmo.demoprj.partitioner;
+package it.gianmo.demonodo.consumer;
 
 import kafka.consumer.Consumer;
 import kafka.consumer.ConsumerConfig;
@@ -11,14 +11,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
-public class AnotherKafkaConsumer {
+public class RtConsumer {
     private ConsumerConnector consumerConnector = null;
-    private final String topic = "EmployeeLoginEventTopicNew";
+    private final String topic = "rt";
 
     public void initialize() {
         Properties props = new Properties();
         props.put("zookeeper.connect", "localhost:2181");
-        props.put("group.id", "testgroup2");
+        props.put("group.id", "testgroup1");
         props.put("zookeeper.session.timeout.ms", "400");
         props.put("zookeeper.sync.time.ms", "300");
         props.put("auto.commit.interval.ms", "1000");
@@ -44,18 +44,17 @@ public class AnotherKafkaConsumer {
 
             while (consumerIte.hasNext())
                 System.out.println("Message consumed from topic [" + topic + "] : "       +
-                        new String(consumerIte.next().message()));
+            new String(consumerIte.next().message()));
         }
         //Shutdown the consumer connector
         if (consumerConnector != null)   consumerConnector.shutdown();
     }
 
     public static void main(String[] args) throws InterruptedException {
-        AnotherKafkaConsumer kafkaConsumer = new AnotherKafkaConsumer();
+        RtConsumer kafkaConsumer = new RtConsumer();
         // Configure Kafka consumer
         kafkaConsumer.initialize();
         // Start consumption
         kafkaConsumer.consume();
     }
 }
-

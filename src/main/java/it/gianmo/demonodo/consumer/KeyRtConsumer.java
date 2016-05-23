@@ -1,15 +1,19 @@
-package it.gianmo.demoprj;
+package it.gianmo.demonodo.consumer;
 
-import java.util.*;
 import kafka.consumer.Consumer;
 import kafka.consumer.ConsumerConfig;
 import kafka.consumer.ConsumerIterator;
 import kafka.consumer.KafkaStream;
 import kafka.javaapi.consumer.ConsumerConnector;
 
-public class KafkaConsumer {
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
+
+public class KeyRtConsumer {
     private ConsumerConnector consumerConnector = null;
-    private final String topic = "multibrokertopic";
+    private final String topic = "keyRt";
 
     public void initialize() {
         Properties props = new Properties();
@@ -47,7 +51,7 @@ public class KafkaConsumer {
     }
 
     public static void main(String[] args) throws InterruptedException {
-        KafkaConsumer kafkaConsumer = new KafkaConsumer();
+        KeyRtConsumer kafkaConsumer = new KeyRtConsumer();
         // Configure Kafka consumer
         kafkaConsumer.initialize();
         // Start consumption

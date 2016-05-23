@@ -1,4 +1,4 @@
-package it.gianmo.demoprj;
+package it.gianmo.demonodo.producer;
 
 import kafka.javaapi.producer.Producer;
 import kafka.producer.KeyedMessage;
@@ -8,12 +8,12 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.Properties;
 
-public class KafkaProducer {
-    private static final String topic = "multibrokertopic";
+public class KeyRtProducer {
+    private static final String topic = "keyRt";
     private static Producer<Integer, String> producer;
 
     public static void main(String[] args) throws Exception {
-        KafkaProducer kafkaProducer = new KafkaProducer();
+        KeyRtProducer kafkaProducer = new KeyRtProducer();
         // Initialize producer
         kafkaProducer.initialize();
         // Publish message
