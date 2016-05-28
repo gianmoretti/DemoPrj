@@ -8,7 +8,7 @@ public class CanaliProducer<CanaleDTO> extends AbstractNodoProducer {
 
     public CanaliProducer() {
         // Initialize producer
-        Initializer.initialize(producer, getPartitionerClass());
+        producer = Initializer.initializeProducer(getPartitionerClass());
     }
 
     private static CanaliProducer singleInstance;

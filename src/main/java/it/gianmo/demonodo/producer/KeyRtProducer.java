@@ -8,7 +8,7 @@ public class KeyRtProducer<KeyRTDTO> extends AbstractNodoProducer {
 
     public KeyRtProducer() {
         // Initialize producer
-        Initializer.initialize(producer, getPartitionerClass());
+        producer = Initializer.initializeProducer(getPartitionerClass());
     }
 
     private static KeyRtProducer singleInstance;

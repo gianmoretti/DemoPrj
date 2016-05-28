@@ -14,9 +14,9 @@ public class CanaliConsumer {
     private ConsumerConnector consumerConnector = null;
     private final String topic = TopicConstants.CANALI;
 
-    public CanaliConsumer() {
+    public CanaliConsumer(String groupId) {
         // Configure Kafka consumer
-        Initializer.initialize(this.consumerConnector);
+        this.consumerConnector = Initializer.initializeConsumer(groupId);
     }
 
     public void consume() {
@@ -44,7 +44,7 @@ public class CanaliConsumer {
     }
 
     public static void main(String[] args) throws InterruptedException {
-        CanaliConsumer kafkaConsumer = new CanaliConsumer();
+        CanaliConsumer kafkaConsumer = new CanaliConsumer(args[0]);
         // Start consumption
         kafkaConsumer.consume();
     }

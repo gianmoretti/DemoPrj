@@ -15,9 +15,9 @@ public class KeyRtConsumer {
     private ConsumerConnector consumerConnector = null;
     private final String topic = TopicConstants.KEY_RT;
 
-    public KeyRtConsumer() {
+    public KeyRtConsumer(String groupId) {
         // Configure Kafka consumer
-        Initializer.initialize(this.consumerConnector);
+        this.consumerConnector = Initializer.initializeConsumer(groupId);
     }
 
     public void consume() {
@@ -45,7 +45,7 @@ public class KeyRtConsumer {
     }
 
     public static void main(String[] args) throws InterruptedException {
-        KeyRtConsumer kafkaConsumer = new KeyRtConsumer();
+        KeyRtConsumer kafkaConsumer = new KeyRtConsumer(args[0]);
         // Start consumption
         kafkaConsumer.consume();
     }
