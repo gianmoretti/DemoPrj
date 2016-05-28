@@ -1,8 +1,9 @@
 package it.gianmo.demonodo.ws.server;
 
+import it.gianmo.demonodo.producer.CanaliDTO;
+import it.gianmo.demonodo.producer.CanaliProducer;
 import it.gianmo.demonodo.ws.generated.*;
 import it.gianmo.demonodo.ws.pa.PagamentiTelematiciRPT;
-import it.gianmo.demonodo.ws.pa.PagamentiTelematiciRT;
 
 import javax.activation.DataHandler;
 import javax.jws.WebParam;
@@ -18,7 +19,11 @@ public class NodoInviaRPTServiceImpl implements PagamentiTelematiciRPT {
 
     @Override
     public NodoInviaRPTRisposta nodoInviaRPT(@WebParam(partName = "bodyrichiesta", name = "nodoInviaRPT", targetNamespace = "http://ws.pagamenti.telematici.gov/") NodoInviaRPT bodyrichiesta, @WebParam(partName = "header", name = "intestazionePPT", targetNamespace = "http://ws.pagamenti.telematici.gov/ppthead", header = true) IntestazionePPT header) {
-        System.out.println("Dentro l'handler...");
+        try {
+            CanaliProducer.getSingleInstance().publishMesssage(new CanaliDTO(bodyrichiesta.getIdentificativoCanale()));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return null;
     }
 

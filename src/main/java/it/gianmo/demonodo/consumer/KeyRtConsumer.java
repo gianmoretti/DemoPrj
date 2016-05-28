@@ -1,7 +1,8 @@
 package it.gianmo.demonodo.consumer;
 
-import kafka.consumer.Consumer;
-import kafka.consumer.ConsumerConfig;
+
+import it.gianmo.demonodo.Initializer;
+import it.gianmo.demonodo.TopicConstants;
 import kafka.consumer.ConsumerIterator;
 import kafka.consumer.KafkaStream;
 import kafka.javaapi.consumer.ConsumerConnector;
@@ -9,21 +10,14 @@ import kafka.javaapi.consumer.ConsumerConnector;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
 
 public class KeyRtConsumer {
     private ConsumerConnector consumerConnector = null;
-    private final String topic = "keyRt";
+    private final String topic = TopicConstants.KEY_RT;
 
-    public void initialize() {
-        Properties props = new Properties();
-        props.put("zookeeper.connect", "localhost:2181");
-        props.put("group.id", "testgroup2");
-        props.put("zookeeper.session.timeout.ms", "400");
-        props.put("zookeeper.sync.time.ms", "300");
-        props.put("auto.commit.interval.ms", "1000");
-        ConsumerConfig conConfig = new ConsumerConfig(props);
-        consumerConnector = Consumer.createJavaConsumerConnector(conConfig);
+    public KeyRtConsumer() {
+        // Configure Kafka consumer
+        Initializer.initialize(this.consumerConnector);
     }
 
     public void consume() {
@@ -44,7 +38,7 @@ public class KeyRtConsumer {
 
             while (consumerIte.hasNext())
                 System.out.println("Message consumed from topic [" + topic + "] : "       +
-            new String(consumerIte.next().message()));
+                        new String(consumerIte.next().message()));
         }
         //Shutdown the consumer connector
         if (consumerConnector != null)   consumerConnector.shutdown();
@@ -52,8 +46,6 @@ public class KeyRtConsumer {
 
     public static void main(String[] args) throws InterruptedException {
         KeyRtConsumer kafkaConsumer = new KeyRtConsumer();
-        // Configure Kafka consumer
-        kafkaConsumer.initialize();
         // Start consumption
         kafkaConsumer.consume();
     }
