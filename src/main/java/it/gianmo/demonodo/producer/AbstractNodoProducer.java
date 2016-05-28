@@ -26,4 +26,5 @@ public abstract class AbstractNodoProducer<T> {
     }
 
     protected abstract String getTopic();
+    protected abstract String getPartitionerClass();
 }

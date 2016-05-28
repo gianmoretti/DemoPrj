@@ -2,12 +2,13 @@ package it.gianmo.demonodo.producer;
 
 import it.gianmo.demonodo.Initializer;
 import it.gianmo.demonodo.TopicConstants;
+import it.gianmo.demonodo.partitioner.CanaliPartitioner;
 
 public class CanaliProducer<CanaleDTO> extends AbstractNodoProducer {
 
     public CanaliProducer() {
         // Initialize producer
-        Initializer.initialize(producer);
+        Initializer.initialize(producer, getPartitionerClass());
     }
 
     private static CanaliProducer singleInstance;
@@ -21,5 +22,10 @@ public class CanaliProducer<CanaleDTO> extends AbstractNodoProducer {
     @Override
     protected String getTopic() {
         return TopicConstants.CANALI;
+    }
+
+    @Override
+    protected String getPartitionerClass() {
+        return CanaliPartitioner.class.getCanonicalName();
     }
 }
