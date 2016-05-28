@@ -1,0 +1,2289 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<con:soapui-project id="886e37c6-924f-4f82-852b-3231b08030e5" activeEnvironment="Default" name="Nodo" resourceRoot="${projectDir}" soapui-version="5.2.1" xmlns:con="http://eviware.com/soapui/config"><con:settings/><con:interface xsi:type="con:WsdlInterface" id="3e847c23-5fda-4a3e-80e2-ae46e071cef0" wsaVersion="NONE" name="PagamentiTelematiciRPTbinding" type="wsdl" bindingName="{http://NodoPagamentiSPC.spcoop.gov.it/servizi/PagamentiTelematiciRPT}PagamentiTelematiciRPTbinding" soapVersion="1_1" anonymous="optional" definition="NodoPerPa.wsdl" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings/><con:definitionCache type="TEXT" rootPart="file:\C:\Users\Utente\IdeaProjects\DemoPrj\src\main\resources\wsdl\ec\NodoPerPa.wsdl"><con:part><con:url>file:\C:\Users\Utente\IdeaProjects\DemoPrj\src\main\resources\wsdl\ec\NodoPerPa.wsdl</con:url><con:content><![CDATA[<!--Questo WSDL rappresenta l'interfaccia esposta dal Nodo dei Pagamenti
+  per la ricezione delle RPT.
+  Versione 6.2.0 di RPT/RT.
+  Renaming delle primitive.-->
+<wsdl:definitions name="PagamentiTelematiciRPTservice" targetNamespace="http://NodoPagamentiSPC.spcoop.gov.it/servizi/PagamentiTelematiciRPT" xmlns:ppt="http://ws.pagamenti.telematici.gov/" xmlns:ppthead="http://ws.pagamenti.telematici.gov/ppthead" xmlns:tns="http://NodoPagamentiSPC.spcoop.gov.it/servizi/PagamentiTelematiciRPT" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/">
+  <wsdl:types>
+    <xsd:schema version="1.0" targetNamespace="http://ws.pagamenti.telematici.gov/ppthead">
+      <xsd:import schemaLocation="envelope.xsd" namespace="http://schemas.xmlsoap.org/soap/envelope/"/>
+      <xsd:simpleType name="stText35">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="1"/>
+          <xsd:maxLength value="35"/>
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:element name="intestazionePPT" xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="identificativoIntermediarioPA" type="ppthead:stText35"/>
+            <xsd:element name="identificativoStazioneIntermediarioPA" type="ppthead:stText35"/>
+            <xsd:element name="identificativoDominio" type="ppthead:stText35"/>
+            <xsd:element name="identificativoUnivocoVersamento" type="ppthead:stText35"/>
+            <xsd:element name="codiceContestoPagamento" type="ppthead:stText35"/>
+          </xsd:sequence>
+          <xsd:attribute ref="soapenv:actor" use="optional"/>
+          <xsd:attribute ref="soapenv:mustUnderstand" use="optional"/>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="intestazioneCarrelloPPT" xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="identificativoIntermediarioPA" type="ppthead:stText35"/>
+            <xsd:element name="identificativoStazioneIntermediarioPA" type="ppthead:stText35"/>
+            <xsd:element name="identificativoCarrello" type="ppthead:stText35"/>
+          </xsd:sequence>
+          <xsd:attribute ref="soapenv:actor" use="optional"/>
+          <xsd:attribute ref="soapenv:mustUnderstand" use="optional"/>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:schema>
+    <xsd:schema version="1.0" targetNamespace="http://ws.pagamenti.telematici.gov/">
+      <xsd:simpleType name="stText35">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="1"/>
+          <xsd:maxLength value="35"/>
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="stText40">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="1"/>
+          <xsd:maxLength value="40"/>
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="stPassword">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="8"/>
+          <xsd:maxLength value="15"/>
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="stEffettuazioneScelta">
+        <xsd:restriction base="xsd:string">
+          <xsd:enumeration value="SI"/>
+          <xsd:enumeration value="NO"/>
+          <xsd:enumeration value="PO"/>
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="stTipoVersamento">
+        <xsd:restriction base="xsd:string">
+          <xsd:enumeration value="BBT"/>
+          <!--Bonifico Bancario di Tesoreria-->
+          <xsd:enumeration value="BP"/>
+          <!--Bollettino Postale-->
+          <xsd:enumeration value="AD"/>
+          <!--Addebito Diretto-->
+          <xsd:enumeration value="CP"/>
+          <!--Carta di Pagamento-->
+          <xsd:enumeration value="PO"/>
+          <!--Pagamento attivato presso PSP-->
+          <xsd:enumeration value="OBEP"/>
+          <!--Online Banking Electronic Payment-->
+          <xsd:maxLength value="4"/>
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:element name="nodoChiediCopiaRT" type="ppt:nodoChiediCopiaRT"/>
+      <xsd:element name="nodoChiediCopiaRTRisposta" type="ppt:nodoChiediCopiaRTRisposta"/>
+      <xsd:element name="nodoInviaRichiestaStorno" type="ppt:nodoInviaRichiestaStorno"/>
+      <xsd:element name="nodoInviaRichiestaStornoRisposta" type="ppt:nodoInviaRichiestaStornoRisposta"/>
+      <xsd:element name="nodoChiediListaPendentiRPT" type="ppt:nodoChiediListaPendentiRPT"/>
+      <xsd:element name="nodoChiediListaPendentiRPTRisposta" type="ppt:nodoChiediListaPendentiRPTRisposta"/>
+      <xsd:element name="nodoChiediStatoRPT" type="ppt:nodoChiediStatoRPT"/>
+      <xsd:element name="nodoChiediStatoRPTRisposta" type="ppt:nodoChiediStatoRPTRisposta"/>
+      <xsd:element name="nodoInviaRPT" type="ppt:nodoInviaRPT"/>
+      <xsd:element name="nodoInviaRPTRisposta" type="ppt:nodoInviaRPTRisposta"/>
+      <xsd:element name="nodoInviaCarrelloRPT" type="ppt:nodoInviaCarrelloRPT"/>
+      <xsd:element name="nodoInviaCarrelloRPTRisposta" type="ppt:nodoInviaCarrelloRPTRisposta"/>
+      <xsd:element name="nodoChiediInformativaPSP" type="ppt:nodoChiediInformativaPSP"/>
+      <xsd:element name="nodoChiediInformativaPSPRisposta" type="ppt:nodoChiediInformativaPSPRisposta"/>
+      <xsd:element name="nodoChiediElencoQuadraturePA" type="ppt:nodoChiediElencoQuadraturePA"/>
+      <xsd:element name="nodoChiediElencoQuadraturePARisposta" type="ppt:nodoChiediElencoQuadraturePARisposta"/>
+      <xsd:element name="nodoChiediQuadraturaPA" type="ppt:nodoChiediQuadraturaPA"/>
+      <xsd:element name="nodoChiediQuadraturaPARisposta" type="ppt:nodoChiediQuadraturaPARisposta"/>
+      <xsd:element name="nodoChiediElencoFlussiRendicontazione" type="ppt:nodoChiediElencoFlussiRendicontazione"/>
+      <xsd:element name="nodoChiediElencoFlussiRendicontazioneRisposta" type="ppt:nodoChiediElencoFlussiRendicontazioneRisposta"/>
+      <xsd:element name="nodoChiediFlussoRendicontazione" type="ppt:nodoChiediFlussoRendicontazione"/>
+      <xsd:element name="nodoChiediFlussoRendicontazioneRisposta" type="ppt:nodoChiediFlussoRendicontazioneRisposta"/>
+      <xsd:element name="nodoChiediSceltaWISP" type="ppt:nodoChiediSceltaWISP"/>
+      <xsd:element name="nodoChiediSceltaWISPRisposta" type="ppt:nodoChiediSceltaWISPRisposta"/>
+      <xsd:complexType name="risposta">
+        <xsd:sequence>
+          <xsd:element name="fault" type="ppt:faultBean" minOccurs="0"/>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="faultBean">
+        <xsd:sequence>
+          <xsd:element name="faultCode" type="xsd:string"/>
+          <xsd:element name="faultString" type="xsd:string"/>
+          <xsd:element name="id" type="xsd:string"/>
+          <xsd:element name="description" type="xsd:string" minOccurs="0"/>
+          <xsd:element name="serial" type="xsd:int" minOccurs="0"/>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="nodoChiediStatoRPT">
+        <xsd:sequence>
+          <xsd:element name="identificativoIntermediarioPA" type="ppt:stText35"/>
+          <xsd:element name="identificativoStazioneIntermediarioPA" type="ppt:stText35"/>
+          <xsd:element name="password" type="ppt:stPassword"/>
+          <xsd:element name="identificativoDominio" type="ppt:stText35"/>
+          <xsd:element name="identificativoUnivocoVersamento" type="ppt:stText35"/>
+          <xsd:element name="codiceContestoPagamento" type="ppt:stText35"/>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="nodoChiediStatoRPTRisposta">
+        <xsd:complexContent>
+          <xsd:extension base="ppt:risposta">
+            <xsd:sequence>
+              <xsd:element name="esito" type="ppt:esitoChiediStatoRPT" minOccurs="0"/>
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="esitoChiediStatoRPT">
+        <xsd:sequence>
+          <xsd:element name="stato" type="xsd:string"/>
+          <xsd:element name="redirect" type="xsd:int" default="0" minOccurs="0"/>
+          <xsd:element name="url" type="xsd:string" default="" minOccurs="0"/>
+          <xsd:element name="elementoStoricoRPT" type="ppt:tipoStoricoRPT" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+          <xsd:element name="elementoStoricoVersamento" type="ppt:tipoStoricoVersamento" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="tipoStoricoRPT">
+        <xsd:sequence>
+          <xsd:element name="data" type="xsd:dateTime"/>
+          <xsd:element name="stato" type="xsd:string"/>
+          <xsd:element name="descrizione" type="xsd:string"/>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="tipoStoricoVersamento">
+        <xsd:sequence>
+          <xsd:element name="progressivo" type="xsd:int"/>
+          <xsd:element name="data" type="xsd:dateTime"/>
+          <xsd:element name="stato" type="xsd:string"/>
+          <xsd:element name="descrizione" type="xsd:string"/>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="nodoChiediCopiaRT">
+        <xsd:sequence>
+          <xsd:element name="identificativoIntermediarioPA" type="ppt:stText35"/>
+          <xsd:element name="identificativoStazioneIntermediarioPA" type="ppt:stText35"/>
+          <xsd:element name="password" type="ppt:stPassword"/>
+          <xsd:element name="identificativoDominio" type="ppt:stText35"/>
+          <xsd:element name="identificativoUnivocoVersamento" type="ppt:stText35"/>
+          <xsd:element name="codiceContestoPagamento" type="ppt:stText35"/>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="nodoChiediCopiaRTRisposta">
+        <xsd:complexContent>
+          <xsd:extension base="ppt:risposta">
+            <xsd:sequence>
+              <xsd:element name="tipoFirma" type="xsd:string" minOccurs="0"/>
+              <xsd:element name="rt" type="xsd:base64Binary" minOccurs="0" xmime:expectedContentTypes="application/octet-stream" xmlns:xmime="http://www.w3.org/2005/05/xmlmime"/>
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="nodoInviaRichiestaStorno">
+        <xsd:sequence>
+          <xsd:element name="identificativoIntermediarioPA" type="ppt:stText35"/>
+          <xsd:element name="identificativoStazioneIntermediarioPA" type="ppt:stText35"/>
+          <xsd:element name="password" type="ppt:stPassword"/>
+          <xsd:element name="identificativoDominio" type="ppt:stText35"/>
+          <xsd:element name="identificativoUnivocoVersamento" type="ppt:stText35"/>
+          <xsd:element name="codiceContestoPagamento" type="ppt:stText35"/>
+          <xsd:element name="rr" type="xsd:base64Binary"/>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="nodoInviaRichiestaStornoRisposta">
+        <xsd:complexContent>
+          <xsd:extension base="ppt:risposta">
+            <xsd:sequence>
+              <xsd:element name="esito" type="xsd:string" minOccurs="0"/>
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="nodoInviaRPT">
+        <xsd:sequence>
+          <xsd:element name="password" type="ppt:stPassword"/>
+          <xsd:element name="identificativoPSP" type="ppt:stText35"/>
+          <xsd:element name="identificativoIntermediarioPSP" type="ppt:stText35" minOccurs="0"/>
+          <xsd:element name="identificativoCanale" type="ppt:stText35" minOccurs="0"/>
+          <xsd:element name="tipoFirma" type="xsd:string"/>
+          <xsd:element name="rpt" type="xsd:base64Binary"/>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="nodoInviaRPTRisposta">
+        <xsd:complexContent>
+          <xsd:extension base="ppt:risposta">
+            <xsd:sequence>
+              <xsd:element name="esito" type="xsd:string" minOccurs="0"/>
+              <xsd:element name="redirect" type="xsd:int" default="0" minOccurs="0"/>
+              <xsd:element name="url" type="xsd:string" default="" minOccurs="0"/>
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="nodoInviaCarrelloRPT">
+        <xsd:sequence>
+          <xsd:element name="password" type="ppt:stPassword"/>
+          <xsd:element name="identificativoPSP" type="ppt:stText35"/>
+          <xsd:element name="identificativoIntermediarioPSP" type="ppt:stText35" minOccurs="0"/>
+          <xsd:element name="identificativoCanale" type="ppt:stText35" minOccurs="0"/>
+          <xsd:element name="listaRPT" type="ppt:tipoListaRPT"/>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="tipoListaRPT">
+        <xsd:sequence>
+          <xsd:element name="elementoListaRPT" type="ppt:tipoElementoListaRPT" minOccurs="1" maxOccurs="unbounded"/>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="tipoElementoListaRPT">
+        <xsd:sequence>
+          <xsd:element name="identificativoDominio" type="ppt:stText35"/>
+          <xsd:element name="identificativoUnivocoVersamento" type="ppt:stText35"/>
+          <xsd:element name="codiceContestoPagamento" type="ppt:stText35"/>
+          <xsd:element name="tipoFirma" type="xsd:string" minOccurs="0"/>
+          <xsd:element name="rpt" type="xsd:base64Binary"/>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="nodoInviaCarrelloRPTRisposta">
+        <xsd:complexContent>
+          <xsd:extension base="ppt:risposta">
+            <xsd:sequence>
+              <xsd:element name="esitoComplessivoOperazione" type="xsd:string"/>
+              <xsd:element name="url" type="xsd:string" default="" minOccurs="0"/>
+              <xsd:element name="listaErroriRPT" type="ppt:listaErroriRPT" minOccurs="0"/>
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="listaErroriRPT">
+        <xsd:sequence>
+          <xsd:element name="fault" type="ppt:faultBean" minOccurs="0" maxOccurs="unbounded"/>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="nodoChiediListaPendentiRPT">
+        <xsd:sequence>
+          <xsd:element name="identificativoIntermediarioPA" type="ppt:stText35"/>
+          <xsd:element name="identificativoStazioneIntermediarioPA" type="ppt:stText35"/>
+          <xsd:element name="password" type="ppt:stPassword"/>
+          <xsd:element name="identificativoDominio" type="ppt:stText35" minOccurs="0"/>
+          <xsd:element name="rangeDa" type="xsd:dateTime" minOccurs="0"/>
+          <xsd:element name="rangeA" type="xsd:dateTime" minOccurs="0"/>
+          <xsd:element name="dimensioneLista" type="xsd:positiveInteger"/>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="nodoChiediListaPendentiRPTRisposta">
+        <xsd:complexContent>
+          <xsd:extension base="ppt:risposta">
+            <xsd:sequence>
+              <xsd:element name="listaRPTPendenti" type="ppt:tipoListaRPTPendenti" minOccurs="0"/>
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="tipoListaRPTPendenti">
+        <xsd:sequence>
+          <xsd:element name="totRestituiti" type="xsd:int"/>
+          <xsd:element name="rptPendente" type="ppt:tipoRPTPendente" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="tipoRPTPendente">
+        <xsd:sequence>
+          <xsd:element name="identificativoDominio" type="ppt:stText35"/>
+          <xsd:element name="identificativoUnivocoVersamento" type="ppt:stText35"/>
+          <xsd:element name="codiceContestoPagamento" type="ppt:stText35"/>
+          <xsd:element name="stato" type="xsd:string"/>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="nodoChiediInformativaPSP">
+        <xsd:sequence>
+          <xsd:element name="identificativoIntermediarioPA" type="ppt:stText35"/>
+          <xsd:element name="identificativoStazioneIntermediarioPA" type="ppt:stText35"/>
+          <xsd:element name="password" type="ppt:stPassword"/>
+          <xsd:element name="identificativoDominio" type="ppt:stText35" minOccurs="0"/>
+          <xsd:element name="identificativoPSP" type="ppt:stText35" minOccurs="0"/>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="nodoChiediInformativaPSPRisposta">
+        <xsd:complexContent>
+          <xsd:extension base="ppt:risposta">
+            <xsd:sequence>
+              <xsd:element name="xmlInformativa" type="xsd:base64Binary" minOccurs="0" xmime:expectedContentTypes="application/octet-stream" xmlns:xmime="http://www.w3.org/2005/05/xmlmime"/>
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="nodoChiediElencoQuadraturePA">
+        <xsd:sequence>
+          <xsd:element name="identificativoIntermediarioPA" type="ppt:stText35"/>
+          <xsd:element name="identificativoStazioneIntermediarioPA" type="ppt:stText35"/>
+          <xsd:element name="password" type="ppt:stPassword"/>
+          <xsd:element name="identificativoDominio" type="ppt:stText35" minOccurs="0"/>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="nodoChiediElencoQuadraturePARisposta">
+        <xsd:complexContent>
+          <xsd:extension base="ppt:risposta">
+            <xsd:sequence>
+              <xsd:element name="listaQuadrature" type="ppt:tipoListaQuadrature" minOccurs="0"/>
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="tipoListaQuadrature">
+        <xsd:sequence>
+          <xsd:element name="totRestituiti" type="xsd:int"/>
+          <xsd:element name="idQuadratura" type="ppt:tipoIdQuadratura" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="tipoIdQuadratura">
+        <xsd:sequence>
+          <xsd:element name="identificativoFlusso" type="xsd:string"/>
+          <xsd:element name="dataOraFlusso" type="xsd:dateTime"/>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="nodoChiediQuadraturaPA">
+        <xsd:sequence>
+          <xsd:element name="identificativoIntermediarioPA" type="ppt:stText35"/>
+          <xsd:element name="identificativoStazioneIntermediarioPA" type="ppt:stText35"/>
+          <xsd:element name="password" type="ppt:stPassword"/>
+          <xsd:element name="identificativoDominio" type="ppt:stText35" minOccurs="0"/>
+          <xsd:element name="identificativoFlusso" type="xsd:string"/>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="nodoChiediQuadraturaPARisposta">
+        <xsd:complexContent>
+          <xsd:extension base="ppt:risposta">
+            <xsd:sequence>
+              <xsd:element name="xmlQuadratura" type="xsd:base64Binary" minOccurs="0" xmime:expectedContentTypes="application/octet-stream" xmlns:xmime="http://www.w3.org/2005/05/xmlmime"/>
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="nodoChiediElencoFlussiRendicontazione">
+        <xsd:sequence>
+          <xsd:element name="identificativoIntermediarioPA" type="ppt:stText35"/>
+          <xsd:element name="identificativoStazioneIntermediarioPA" type="ppt:stText35"/>
+          <xsd:element name="password" type="ppt:stPassword"/>
+          <xsd:element name="identificativoDominio" type="ppt:stText35" minOccurs="0"/>
+          <xsd:element name="identificativoPSP" type="ppt:stText35" minOccurs="0"/>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="nodoChiediElencoFlussiRendicontazioneRisposta">
+        <xsd:complexContent>
+          <xsd:extension base="ppt:risposta">
+            <xsd:sequence>
+              <xsd:element name="elencoFlussiRendicontazione" type="ppt:tipoElencoFlussiRendicontazione" minOccurs="0"/>
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="tipoElencoFlussiRendicontazione">
+        <xsd:sequence>
+          <xsd:element name="totRestituiti" type="xsd:int"/>
+          <xsd:element name="idRendicontazione" type="ppt:tipoIdRendicontazione" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="tipoIdRendicontazione">
+        <xsd:sequence>
+          <xsd:element name="identificativoFlusso" type="xsd:string"/>
+          <xsd:element name="dataOraFlusso" type="xsd:dateTime"/>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="nodoChiediFlussoRendicontazione">
+        <xsd:sequence>
+          <xsd:element name="identificativoIntermediarioPA" type="ppt:stText35"/>
+          <xsd:element name="identificativoStazioneIntermediarioPA" type="ppt:stText35"/>
+          <xsd:element name="password" type="ppt:stPassword"/>
+          <xsd:element name="identificativoDominio" type="ppt:stText35" minOccurs="0"/>
+          <xsd:element name="identificativoPSP" type="ppt:stText35" minOccurs="0"/>
+          <xsd:element name="identificativoFlusso" type="xsd:string"/>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="nodoChiediFlussoRendicontazioneRisposta">
+        <xsd:complexContent>
+          <xsd:extension base="ppt:risposta">
+            <xsd:sequence>
+              <xsd:element name="xmlRendicontazione" type="xsd:base64Binary" minOccurs="0" xmime:expectedContentTypes="application/octet-stream" xmlns:xmime="http://www.w3.org/2005/05/xmlmime"/>
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="nodoChiediSceltaWISP">
+        <xsd:sequence>
+          <xsd:element name="identificativoIntermediarioPA" type="ppt:stText35"/>
+          <xsd:element name="identificativoStazioneIntermediarioPA" type="ppt:stText35"/>
+          <xsd:element name="password" type="ppt:stPassword"/>
+          <xsd:element name="identificativoDominio" type="ppt:stText35"/>
+          <xsd:element name="keyPA" type="ppt:stText40"/>
+          <xsd:element name="keyWISP" type="ppt:stText40"/>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="nodoChiediSceltaWISPRisposta">
+        <xsd:complexContent>
+          <xsd:extension base="ppt:risposta">
+            <xsd:sequence>
+              <xsd:element name="effettuazioneScelta" type="ppt:stEffettuazioneScelta" minOccurs="0"/>
+              <xsd:element name="identificativoPSP" type="ppt:stText35" minOccurs="0"/>
+              <xsd:element name="identificativoIntermediarioPSP" type="ppt:stText35" minOccurs="0"/>
+              <xsd:element name="identificativoCanale" type="ppt:stText35" minOccurs="0"/>
+              <xsd:element name="tipoVersamento" type="ppt:stTipoVersamento" minOccurs="0"/>
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="nodoChiediStatoRPT">
+    <wsdl:part name="bodyrichiesta" element="ppt:nodoChiediStatoRPT"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="nodoChiediStatoRPTResponse">
+    <wsdl:part name="bodyrisposta" element="ppt:nodoChiediStatoRPTRisposta"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="nodoChiediCopiaRT">
+    <wsdl:part name="bodyrichiesta" element="ppt:nodoChiediCopiaRT"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="nodoChiediCopiaRTResponse">
+    <wsdl:part name="bodyrisposta" element="ppt:nodoChiediCopiaRTRisposta"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="nodoInviaRPT">
+    <wsdl:part name="bodyrichiesta" element="ppt:nodoInviaRPT"></wsdl:part>
+    <wsdl:part name="header" element="ppthead:intestazionePPT"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="nodoInviaRPTResponse">
+    <wsdl:part name="bodyrisposta" element="ppt:nodoInviaRPTRisposta"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="nodoInviaCarrelloRPT">
+    <wsdl:part name="bodyrichiesta" element="ppt:nodoInviaCarrelloRPT"></wsdl:part>
+    <wsdl:part name="header" element="ppthead:intestazioneCarrelloPPT"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="nodoInviaCarrelloRPTResponse">
+    <wsdl:part name="bodyrisposta" element="ppt:nodoInviaCarrelloRPTRisposta"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="nodoChiediListaPendentiRPT">
+    <wsdl:part name="bodyrichiesta" element="ppt:nodoChiediListaPendentiRPT"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="nodoChiediListaPendentiRPTResponse">
+    <wsdl:part name="bodyrisposta" element="ppt:nodoChiediListaPendentiRPTRisposta"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="nodoChiediInformativaPSP">
+    <wsdl:part name="bodyrichiesta" element="ppt:nodoChiediInformativaPSP"/>
+  </wsdl:message>
+  <wsdl:message name="nodoChiediInformativaPSPResponse">
+    <wsdl:part name="bodyrisposta" element="ppt:nodoChiediInformativaPSPRisposta"/>
+  </wsdl:message>
+  <wsdl:message name="nodoChiediElencoQuadraturePA">
+    <wsdl:part name="bodyrichiesta" element="ppt:nodoChiediElencoQuadraturePA"/>
+  </wsdl:message>
+  <wsdl:message name="nodoChiediElencoQuadraturePAResponse">
+    <wsdl:part name="bodyrisposta" element="ppt:nodoChiediElencoQuadraturePARisposta"/>
+  </wsdl:message>
+  <wsdl:message name="nodoChiediQuadraturaPA">
+    <wsdl:part name="parameters" element="ppt:nodoChiediQuadraturaPA"/>
+  </wsdl:message>
+  <wsdl:message name="nodoChiediQuadraturaPAResponse">
+    <wsdl:part name="parameters" element="ppt:nodoChiediQuadraturaPARisposta"/>
+  </wsdl:message>
+  <wsdl:message name="nodoChiediElencoFlussiRendicontazione">
+    <wsdl:part name="parameters" element="ppt:nodoChiediElencoFlussiRendicontazione"/>
+  </wsdl:message>
+  <wsdl:message name="nodoChiediElencoFlussiRendicontazioneResponse">
+    <wsdl:part name="parameters" element="ppt:nodoChiediElencoFlussiRendicontazioneRisposta"/>
+  </wsdl:message>
+  <wsdl:message name="nodoChiediFlussoRendicontazione">
+    <wsdl:part name="parameters" element="ppt:nodoChiediFlussoRendicontazione"/>
+  </wsdl:message>
+  <wsdl:message name="nodoChiediFlussoRendicontazioneResponse">
+    <wsdl:part name="parameters" element="ppt:nodoChiediFlussoRendicontazioneRisposta"/>
+  </wsdl:message>
+  <wsdl:message name="nodoInviaRichiestaStorno">
+    <wsdl:part name="parameters" element="ppt:nodoInviaRichiestaStorno"/>
+  </wsdl:message>
+  <wsdl:message name="nodoInviaRichiestaStornoResponse">
+    <wsdl:part name="parameters" element="ppt:nodoInviaRichiestaStornoRisposta"/>
+  </wsdl:message>
+  <wsdl:message name="nodoChiediSceltaWISP">
+    <wsdl:part name="bodyrichiesta" element="ppt:nodoChiediSceltaWISP"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="nodoChiediSceltaWISPResponse">
+    <wsdl:part name="bodyrisposta" element="ppt:nodoChiediSceltaWISPRisposta"></wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="PagamentiTelematiciRPT">
+    <wsdl:operation name="nodoChiediStatoRPT">
+      <wsdl:input name="nodoChiediStatoRPT" message="tns:nodoChiediStatoRPT" wsam:Action="http://ws.pagamenti.telematici.gov/PPT/nodoChiediStatoRPTRichiesta" wsaw:Action="http://ws.pagamenti.telematici.gov/PPT/nodoChiediStatoRPTRichiesta"></wsdl:input>
+      <wsdl:output name="nodoChiediStatoRPTResponse" message="tns:nodoChiediStatoRPTResponse" wsam:Action="http://ws.pagamenti.telematici.gov/PPT/nodoChiediStatoRPTRisposta" wsaw:Action="http://ws.pagamenti.telematici.gov/PPT/nodoChiediStatoRPTRisposta"></wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="nodoChiediListaPendentiRPT">
+      <wsdl:input name="nodoChiediListaPendentiRPT" message="tns:nodoChiediListaPendentiRPT" wsam:Action="http://ws.pagamenti.telematici.gov/PPT/nodoChiediListaPendentiRPT" wsaw:Action="http://ws.pagamenti.telematici.gov/PPT/nodoChiediListaPendentiRPTRichiesta"></wsdl:input>
+      <wsdl:output name="nodoChiediListaPendentiRPTResponse" message="tns:nodoChiediListaPendentiRPTResponse" wsam:Action="http://ws.pagamenti.telematici.gov/PPT/nodoChiediListaPendentiRPTRisposta" wsaw:Action="http://ws.pagamenti.telematici.gov/PPT/nodoChiediListaPendentiRPTRisposta"></wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="nodoInviaRPT">
+      <wsdl:input name="nodoInviaRPT" message="tns:nodoInviaRPT" wsam:Action="http://ws.pagamenti.telematici.gov/PPT/nodoInviaRPTRichiesta" wsaw:Action="http://ws.pagamenti.telematici.gov/PPT/nodoInviaRPTRichiesta"></wsdl:input>
+      <wsdl:output name="nodoInviaRPTResponse" message="tns:nodoInviaRPTResponse" wsam:Action="http://ws.pagamenti.telematici.gov/PPT/nodoInviaRPTRisposta" wsaw:Action="http://ws.pagamenti.telematici.gov/PPT/nodoInviaRPTRisposta"></wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="nodoInviaCarrelloRPT">
+      <wsdl:input name="nodoInviaCarrelloRPT" message="tns:nodoInviaCarrelloRPT" wsam:Action="http://ws.pagamenti.telematici.gov/PPT/nodoInviaCarrelloRPTRichiesta" wsaw:Action="http://ws.pagamenti.telematici.gov/PPT/nodoInviaCarrelloRPTRichiesta"></wsdl:input>
+      <wsdl:output name="nodoInviaCarrelloRPTResponse" message="tns:nodoInviaCarrelloRPTResponse" wsam:Action="http://ws.pagamenti.telematici.gov/PPT/nodoInviaCarrelloRPTRisposta" wsaw:Action="http://ws.pagamenti.telematici.gov/PPT/nodoInviaCarrelloRPTRisposta"></wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="nodoChiediCopiaRT">
+      <wsdl:input name="nodoChiediCopiaRT" message="tns:nodoChiediCopiaRT" wsam:Action="http://ws.pagamenti.telematici.gov/PPT/nodoChiediCopiaRTRichiesta" wsaw:Action="http://ws.pagamenti.telematici.gov/PPT/nodoChiediCopiaRTRichiesta"></wsdl:input>
+      <wsdl:output name="nodoChiediCopiaRTResponse" message="tns:nodoChiediCopiaRTResponse" wsam:Action="http://ws.pagamenti.telematici.gov/PPT/nodoChiediCopiaRTRisposta" wsaw:Action="http://ws.pagamenti.telematici.gov/PPT/nodoChiediCopiaRTRisposta"></wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="nodoChiediInformativaPSP">
+      <wsdl:input name="nodoChiediInformativaPSP" message="tns:nodoChiediInformativaPSP" wsam:Action="http://ws.pagamenti.telematici.gov/PPT/nodoChiediInformativaPSPRichiesta" wsaw:Action="http://ws.pagamenti.telematici.gov/PPT/nodoChiediInformativaPSPRichiesta"/>
+      <wsdl:output name="nodoChiediInformativaPSPResponse" message="tns:nodoChiediInformativaPSPResponse" wsam:Action="http://ws.pagamenti.telematici.gov/PPT/nodoChiediInformativaPSPRisposta" wsaw:Action="http://ws.pagamenti.telematici.gov/PPT/nodoChiediInformativaPSPRisposta"/>
+    </wsdl:operation>
+    <wsdl:operation name="nodoChiediElencoQuadraturePA">
+      <wsdl:input name="nodoChiediElencoQuadraturePA" message="tns:nodoChiediElencoQuadraturePA" wsam:Action="http://ws.pagamenti.telematici.gov/PPT/nodoChiediElencoQuadraturePARichiesta" wsaw:Action="http://ws.pagamenti.telematici.gov/PPT/nodoChiediElencoQuadraturePARichiesta"/>
+      <wsdl:output name="nodoChiediElencoQuadraturePAResponse" message="tns:nodoChiediElencoQuadraturePAResponse" wsam:Action="http://ws.pagamenti.telematici.gov/PPT/nodoChiediElencoQuadraturePARisposta" wsaw:Action="http://ws.pagamenti.telematici.gov/PPT/nodoChiediElencoQuadraturePARisposta"/>
+    </wsdl:operation>
+    <wsdl:operation name="nodoChiediQuadraturaPA">
+      <wsdl:input name="nodoChiediQuadraturaPA" message="tns:nodoChiediQuadraturaPA" wsam:Action="http://ws.pagamenti.telematici.gov/PPT/nodoChiediQuadraturaPARichiesta" wsaw:Action="http://ws.pagamenti.telematici.gov/PPT/nodoChiediQuadraturaPARichiesta"/>
+      <wsdl:output name="nodoChiediQuadraturaPAResponse" message="tns:nodoChiediQuadraturaPAResponse" wsam:Action="http://ws.pagamenti.telematici.gov/PPT/nodoChiediQuadraturaPARisposta" wsaw:Action="http://ws.pagamenti.telematici.gov/PPT/nodoChiediQuadraturaPARisposta"/>
+    </wsdl:operation>
+    <wsdl:operation name="nodoChiediElencoFlussiRendicontazione">
+      <wsdl:input name="nodoChiediElencoFlussiRendicontazione" message="tns:nodoChiediElencoFlussiRendicontazione" wsam:Action="http://ws.pagamenti.telematici.gov/PPT/nodoChiediElencoFlussiRendicontazioneRichiesta" wsaw:Action="http://ws.pagamenti.telematici.gov/PPT/nodoChiediElencoFlussiRendicontazioneRichiesta"/>
+      <wsdl:output name="nodoChiediElencoFlussiRendicontazioneResponse" message="tns:nodoChiediElencoFlussiRendicontazioneResponse" wsam:Action="http://ws.pagamenti.telematici.gov/PPT/nodoChiediElencoFlussiRendicontazioneRisposta" wsaw:Action="http://ws.pagamenti.telematici.gov/PPT/nodoChiediElencoFlussiRendicontazioneRisposta"/>
+    </wsdl:operation>
+    <wsdl:operation name="nodoChiediFlussoRendicontazione">
+      <wsdl:input name="nodoChiediFlussoRendicontazione" message="tns:nodoChiediFlussoRendicontazione" wsam:Action="http://ws.pagamenti.telematici.gov/PPT/nodoChiediFlussoRendicontazioneRichiesta" wsaw:Action="http://ws.pagamenti.telematici.gov/PPT/nodoChiediFlussoRendicontazioneRichiesta"/>
+      <wsdl:output name="nodoChiediFlussoRendicontazioneResponse" message="tns:nodoChiediFlussoRendicontazioneResponse" wsam:Action="http://ws.pagamenti.telematici.gov/PPT/nodoChiediFlussoRendicontazioneRisposta" wsaw:Action="http://ws.pagamenti.telematici.gov/PPT/nodoChiediFlussoRendicontazioneRisposta"/>
+    </wsdl:operation>
+    <wsdl:operation name="nodoInviaRichiestaStorno">
+      <wsdl:input name="nodoInviaRichiestaStorno" message="tns:nodoInviaRichiestaStorno" wsam:Action="http://ws.pagamenti.telematici.gov/PPT/nodoInviaRichiestaStorno" wsaw:Action="http://ws.pagamenti.telematici.gov/PPT/nodoInviaRichiestaStorno"/>
+      <wsdl:output name="nodoInviaRichiestaStornoResponse" message="tns:nodoInviaRichiestaStornoResponse" wsam:Action="http://ws.pagamenti.telematici.gov/PPT/nodoInviaRichiestaStornoRisposta" wsaw:Action="http://ws.pagamenti.telematici.gov/PPT/nodoInviaRichiestaStornoRisposta"/>
+    </wsdl:operation>
+    <wsdl:operation name="nodoChiediSceltaWISP">
+      <wsdl:input name="nodoChiediSceltaWISP" message="tns:nodoChiediSceltaWISP" wsam:Action="http://ws.pagamenti.telematici.gov/PPT/nodoChiediSceltaWISPRichiesta" wsaw:Action="http://ws.pagamenti.telematici.gov/PPT/nodoChiediSceltaWISPRichiesta"></wsdl:input>
+      <wsdl:output name="nodoChiediSceltaWISPResponse" message="tns:nodoChiediSceltaWISPResponse" wsam:Action="http://ws.pagamenti.telematici.gov/PPT/nodoChiediSceltaWISPRisposta" wsaw:Action="http://ws.pagamenti.telematici.gov/PPT/nodoChiediSceltaWISPRisposta"></wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="PagamentiTelematiciRPTbinding" type="tns:PagamentiTelematiciRPT">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="nodoChiediStatoRPT">
+      <soap:operation soapAction="nodoChiediStatoRPT" style="document"/>
+      <wsdl:input name="nodoChiediStatoRPT">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="nodoChiediStatoRPTResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="nodoChiediListaPendentiRPT">
+      <soap:operation soapAction="nodoChiediListaPendentiRPT" style="document"/>
+      <wsdl:input name="nodoChiediListaPendentiRPT">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="nodoChiediListaPendentiRPTResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="nodoInviaRPT">
+      <soap:operation soapAction="nodoInviaRPT" style="document"/>
+      <wsdl:input name="nodoInviaRPT">
+        <soap:header message="tns:nodoInviaRPT" part="header" use="literal"></soap:header>
+        <soap:body parts="bodyrichiesta" use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="nodoInviaRPTResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="nodoInviaCarrelloRPT">
+      <soap:operation soapAction="nodoInviaCarrelloRPT" style="document"/>
+      <wsdl:input name="nodoInviaCarrelloRPT">
+        <soap:header message="tns:nodoInviaCarrelloRPT" part="header" use="literal"></soap:header>
+        <soap:body parts="bodyrichiesta" use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="nodoInviaCarrelloRPTResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="nodoChiediCopiaRT">
+      <soap:operation soapAction="nodoChiediCopiaRT" style="document"/>
+      <wsdl:input name="nodoChiediCopiaRT">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="nodoChiediCopiaRTResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="nodoChiediInformativaPSP">
+      <soap:operation soapAction="nodoChiediInformativaPSP" style="document"/>
+      <wsdl:input name="nodoChiediInformativaPSP">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="nodoChiediInformativaPSPResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="nodoChiediElencoQuadraturePA">
+      <soap:operation soapAction="nodoChiediElencoQuadraturePA" style="document"/>
+      <wsdl:input name="nodoChiediElencoQuadraturePA">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="nodoChiediElencoQuadraturePAResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="nodoChiediQuadraturaPA">
+      <soap:operation soapAction="nodoChiediQuadraturaPA" style="document"/>
+      <wsdl:input name="nodoChiediQuadraturaPA">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="nodoChiediQuadraturaPAResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="nodoChiediElencoFlussiRendicontazione">
+      <soap:operation soapAction="nodoChiediElencoFlussiRendicontazione" style="document"/>
+      <wsdl:input name="nodoChiediElencoFlussiRendicontazione">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="nodoChiediElencoFlussiRendicontazioneResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="nodoChiediFlussoRendicontazione">
+      <soap:operation soapAction="nodoChiediFlussoRendicontazione" style="document"/>
+      <wsdl:input name="nodoChiediFlussoRendicontazione">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="nodoChiediFlussoRendicontazioneResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="nodoInviaRichiestaStorno">
+      <soap:operation soapAction="nodoInviaRichiestaStorno" style="document"/>
+      <wsdl:input name="nodoInviaRichiestaStorno">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="nodoInviaRichiestaStornoResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="nodoChiediSceltaWISP">
+      <soap:operation soapAction="nodoChiediSceltaWISP" style="document"/>
+      <wsdl:input name="nodoChiediSceltaWISP">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="nodoChiediSceltaWISPResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="PagamentiTelematiciRPTservice">
+    <wsdl:port name="PagamentiTelematiciRPTPort" binding="tns:PagamentiTelematiciRPTbinding">
+      <soap:address location="http://NodoPagamentiSPC.spcoop.gov.it/"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>]]></con:content><con:type>http://schemas.xmlsoap.org/wsdl/</con:type></con:part><con:part><con:url>file:\C:\Users\Utente\IdeaProjects\DemoPrj\src\main\resources\wsdl\ec\envelope.xsd</con:url><con:content><![CDATA[<!--Schema for the SOAP/1.1 envelope
+
+Portions © 2001 DevelopMentor. 
+© 2001 W3C (Massachusetts Institute of Technology, Institut National de Recherche en Informatique et en Automatique, Keio University). All Rights Reserved.  
+ 
+This document is governed by the W3C Software License [1] as described in the FAQ [2].
+[1] http://www.w3.org/Consortium/Legal/copyright-software-19980720
+[2] http://www.w3.org/Consortium/Legal/IPR-FAQ-20000620.html#DTD 
+By obtaining, using and/or copying this work, you (the licensee) agree that you have read, understood, and will comply with the following terms and conditions:
+
+Permission to use, copy, modify, and distribute this software and its documentation, with or without modification,  for any purpose and without fee or royalty is hereby granted, provided that you include the following on ALL copies of the software and documentation or portions thereof, including modifications, that you make:
+
+1.  The full text of this NOTICE in a location viewable to users of the redistributed or derivative work. 
+
+2.  Any pre-existing intellectual property disclaimers, notices, or terms and conditions. If none exist, a short notice of the following form (hypertext is preferred, text is permitted) should be used within the body of any redistributed or derivative code: "Copyright © 2001 World Wide Web Consortium, (Massachusetts Institute of Technology, Institut National de Recherche en Informatique et en Automatique, Keio University). All Rights Reserved. http://www.w3.org/Consortium/Legal/" 
+
+3.  Notice of any changes or modifications to the W3C files, including the date changes were made. (We recommend you provide URIs to the location from which the code is derived.)   
+
+Original W3C files; http://www.w3.org/2001/06/soap-envelope
+Changes made: 
+     - reverted namespace to http://schemas.xmlsoap.org/soap/envelope/
+     - reverted mustUnderstand to only allow 0 and 1 as lexical values
+	 - made encodingStyle a global attribute 20020825
+	 - removed default value from mustUnderstand attribute declaration
+
+THIS SOFTWARE AND DOCUMENTATION IS PROVIDED "AS IS," AND COPYRIGHT HOLDERS MAKE NO REPRESENTATIONS OR WARRANTIES, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO, WARRANTIES OF MERCHANTABILITY OR FITNESS FOR ANY PARTICULAR PURPOSE OR THAT THE USE OF THE SOFTWARE OR DOCUMENTATION WILL NOT INFRINGE ANY THIRD PARTY PATENTS, COPYRIGHTS, TRADEMARKS OR OTHER RIGHTS.
+
+COPYRIGHT HOLDERS WILL NOT BE LIABLE FOR ANY DIRECT, INDIRECT, SPECIAL OR CONSEQUENTIAL DAMAGES ARISING OUT OF ANY USE OF THE SOFTWARE OR DOCUMENTATION.
+
+The name and trademarks of copyright holders may NOT be used in advertising or publicity pertaining to the software without specific, written prior permission. Title to copyright in this software and any associated documentation will at all times remain with copyright holders.-->
+<xs:schema targetNamespace="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://schemas.xmlsoap.org/soap/envelope/">
+  <!--Envelope, header and body-->
+  <xs:element name="Envelope" type="tns:Envelope"/>
+  <xs:complexType name="Envelope">
+    <xs:sequence>
+      <xs:element ref="tns:Header" minOccurs="0"/>
+      <xs:element ref="tns:Body" minOccurs="1"/>
+      <xs:any namespace="##other" minOccurs="0" maxOccurs="unbounded" processContents="lax"/>
+    </xs:sequence>
+    <xs:anyAttribute namespace="##other" processContents="lax"/>
+  </xs:complexType>
+  <xs:element name="Header" type="tns:Header"/>
+  <xs:complexType name="Header">
+    <xs:sequence>
+      <xs:any namespace="##other" minOccurs="0" maxOccurs="unbounded" processContents="lax"/>
+    </xs:sequence>
+    <xs:anyAttribute namespace="##other" processContents="lax"/>
+  </xs:complexType>
+  <xs:element name="Body" type="tns:Body"/>
+  <xs:complexType name="Body">
+    <xs:sequence>
+      <xs:any namespace="##any" minOccurs="0" maxOccurs="unbounded" processContents="lax"/>
+    </xs:sequence>
+    <xs:anyAttribute namespace="##any" processContents="lax">
+      <xs:annotation>
+        <xs:documentation>Prose in the spec does not specify that attributes are allowed on the Body element</xs:documentation>
+      </xs:annotation>
+    </xs:anyAttribute>
+  </xs:complexType>
+  <!--Global Attributes.  The following attributes are intended to be usable via qualified attribute names on any complex type referencing them.-->
+  <xs:attribute name="mustUnderstand">
+    <xs:simpleType>
+      <xs:restriction base="xs:boolean">
+        <xs:pattern value="0|1"/>
+      </xs:restriction>
+    </xs:simpleType>
+  </xs:attribute>
+  <xs:attribute name="actor" type="xs:anyURI"/>
+  <xs:simpleType name="encodingStyle">
+    <xs:annotation>
+      <xs:documentation>'encodingStyle' indicates any canonicalization conventions followed in the contents of the containing element.  For example, the value 'http://schemas.xmlsoap.org/soap/encoding/' indicates the pattern described in SOAP specification</xs:documentation>
+    </xs:annotation>
+    <xs:list itemType="xs:anyURI"/>
+  </xs:simpleType>
+  <xs:attribute name="encodingStyle" type="tns:encodingStyle"/>
+  <xs:attributeGroup name="encodingStyle">
+    <xs:attribute ref="tns:encodingStyle"/>
+  </xs:attributeGroup>
+  <xs:element name="Fault" type="tns:Fault"/>
+  <xs:complexType name="Fault" final="extension">
+    <xs:annotation>
+      <xs:documentation>Fault reporting structure</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="faultcode" type="xs:QName"/>
+      <xs:element name="faultstring" type="xs:string"/>
+      <xs:element name="faultactor" type="xs:anyURI" minOccurs="0"/>
+      <xs:element name="detail" type="tns:detail" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="detail">
+    <xs:sequence>
+      <xs:any namespace="##any" minOccurs="0" maxOccurs="unbounded" processContents="lax"/>
+    </xs:sequence>
+    <xs:anyAttribute namespace="##any" processContents="lax"/>
+  </xs:complexType>
+</xs:schema>]]></con:content><con:type>http://www.w3.org/2001/XMLSchema</con:type></con:part></con:definitionCache><con:endpoints><con:endpoint>http://NodoPagamentiSPC.spcoop.gov.it/</con:endpoint></con:endpoints><con:operation id="1a494112-b8bb-4901-a65c-2ab7760cf75f" isOneWay="false" action="nodoChiediCopiaRT" name="nodoChiediCopiaRT" bindingOperationName="nodoChiediCopiaRT" type="Request-Response" outputName="nodoChiediCopiaRTResponse" inputName="nodoChiediCopiaRT" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call id="6ffd7b0d-0420-4a4e-98b4-8e1d8eda5456" name="Request 1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://NodoPagamentiSPC.spcoop.gov.it/</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ws="http://ws.pagamenti.telematici.gov/">\r
+   <soapenv:Header/>\r
+   <soapenv:Body>\r
+      <ws:nodoChiediCopiaRT>\r
+         <identificativoIntermediarioPA>?</identificativoIntermediarioPA>\r
+         <identificativoStazioneIntermediarioPA>?</identificativoStazioneIntermediarioPA>\r
+         <password>?</password>\r
+         <identificativoDominio>?</identificativoDominio>\r
+         <identificativoUnivocoVersamento>?</identificativoUnivocoVersamento>\r
+         <codiceContestoPagamento>?</codiceContestoPagamento>\r
+      </ws:nodoChiediCopiaRT>\r
+   </soapenv:Body>\r
+</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="nodoChiediCopiaRT"/></con:call></con:operation><con:operation id="c9d64508-f196-433a-b254-84eb868b6c37" isOneWay="false" action="nodoChiediElencoFlussiRendicontazione" name="nodoChiediElencoFlussiRendicontazione" bindingOperationName="nodoChiediElencoFlussiRendicontazione" type="Request-Response" outputName="nodoChiediElencoFlussiRendicontazioneResponse" inputName="nodoChiediElencoFlussiRendicontazione" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call id="66b02494-ad1c-45c0-b9e3-6c9603787b68" name="Request 1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://NodoPagamentiSPC.spcoop.gov.it/</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ws="http://ws.pagamenti.telematici.gov/">\r
+   <soapenv:Header/>\r
+   <soapenv:Body>\r
+      <ws:nodoChiediElencoFlussiRendicontazione>\r
+         <identificativoIntermediarioPA>?</identificativoIntermediarioPA>\r
+         <identificativoStazioneIntermediarioPA>?</identificativoStazioneIntermediarioPA>\r
+         <password>?</password>\r
+         <!--Optional:-->\r
+         <identificativoDominio>?</identificativoDominio>\r
+         <!--Optional:-->\r
+         <identificativoPSP>?</identificativoPSP>\r
+      </ws:nodoChiediElencoFlussiRendicontazione>\r
+   </soapenv:Body>\r
+</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="nodoChiediElencoFlussiRendicontazione"/></con:call></con:operation><con:operation id="c0825096-e74a-4fe6-9802-b5ca412a301c" isOneWay="false" action="nodoChiediElencoQuadraturePA" name="nodoChiediElencoQuadraturePA" bindingOperationName="nodoChiediElencoQuadraturePA" type="Request-Response" outputName="nodoChiediElencoQuadraturePAResponse" inputName="nodoChiediElencoQuadraturePA" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call id="7f35adc0-ff5a-431c-8102-0ce1aa06904b" name="Request 1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://NodoPagamentiSPC.spcoop.gov.it/</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ws="http://ws.pagamenti.telematici.gov/">\r
+   <soapenv:Header/>\r
+   <soapenv:Body>\r
+      <ws:nodoChiediElencoQuadraturePA>\r
+         <identificativoIntermediarioPA>?</identificativoIntermediarioPA>\r
+         <identificativoStazioneIntermediarioPA>?</identificativoStazioneIntermediarioPA>\r
+         <password>?</password>\r
+         <!--Optional:-->\r
+         <identificativoDominio>?</identificativoDominio>\r
+      </ws:nodoChiediElencoQuadraturePA>\r
+   </soapenv:Body>\r
+</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="nodoChiediElencoQuadraturePA"/></con:call></con:operation><con:operation id="4521dae0-9117-4f53-a56a-08bc2960eb8f" isOneWay="false" action="nodoChiediFlussoRendicontazione" name="nodoChiediFlussoRendicontazione" bindingOperationName="nodoChiediFlussoRendicontazione" type="Request-Response" outputName="nodoChiediFlussoRendicontazioneResponse" inputName="nodoChiediFlussoRendicontazione" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call id="9cfb1b0f-cf22-4a2a-a57a-dcd59b0a6093" name="Request 1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://NodoPagamentiSPC.spcoop.gov.it/</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ws="http://ws.pagamenti.telematici.gov/">\r
+   <soapenv:Header/>\r
+   <soapenv:Body>\r
+      <ws:nodoChiediFlussoRendicontazione>\r
+         <identificativoIntermediarioPA>?</identificativoIntermediarioPA>\r
+         <identificativoStazioneIntermediarioPA>?</identificativoStazioneIntermediarioPA>\r
+         <password>?</password>\r
+         <!--Optional:-->\r
+         <identificativoDominio>?</identificativoDominio>\r
+         <!--Optional:-->\r
+         <identificativoPSP>?</identificativoPSP>\r
+         <identificativoFlusso>?</identificativoFlusso>\r
+      </ws:nodoChiediFlussoRendicontazione>\r
+   </soapenv:Body>\r
+</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="nodoChiediFlussoRendicontazione"/></con:call></con:operation><con:operation id="e163731a-d84f-4dff-b5ea-02569f702cb7" isOneWay="false" action="nodoChiediInformativaPSP" name="nodoChiediInformativaPSP" bindingOperationName="nodoChiediInformativaPSP" type="Request-Response" outputName="nodoChiediInformativaPSPResponse" inputName="nodoChiediInformativaPSP" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call id="4e942545-aa6a-49c7-a603-38eac303c9d9" name="Request 1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://NodoPagamentiSPC.spcoop.gov.it/</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ws="http://ws.pagamenti.telematici.gov/">\r
+   <soapenv:Header/>\r
+   <soapenv:Body>\r
+      <ws:nodoChiediInformativaPSP>\r
+         <identificativoIntermediarioPA>?</identificativoIntermediarioPA>\r
+         <identificativoStazioneIntermediarioPA>?</identificativoStazioneIntermediarioPA>\r
+         <password>?</password>\r
+         <!--Optional:-->\r
+         <identificativoDominio>?</identificativoDominio>\r
+         <!--Optional:-->\r
+         <identificativoPSP>?</identificativoPSP>\r
+      </ws:nodoChiediInformativaPSP>\r
+   </soapenv:Body>\r
+</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="nodoChiediInformativaPSP"/></con:call></con:operation><con:operation id="b117381b-8126-4945-b06e-5a799b3f3163" isOneWay="false" action="nodoChiediListaPendentiRPT" name="nodoChiediListaPendentiRPT" bindingOperationName="nodoChiediListaPendentiRPT" type="Request-Response" outputName="nodoChiediListaPendentiRPTResponse" inputName="nodoChiediListaPendentiRPT" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call id="ec3d74ad-36a3-428f-98e7-2ffd83ef94b8" name="Request 1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://NodoPagamentiSPC.spcoop.gov.it/</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ws="http://ws.pagamenti.telematici.gov/">\r
+   <soapenv:Header/>\r
+   <soapenv:Body>\r
+      <ws:nodoChiediListaPendentiRPT>\r
+         <identificativoIntermediarioPA>?</identificativoIntermediarioPA>\r
+         <identificativoStazioneIntermediarioPA>?</identificativoStazioneIntermediarioPA>\r
+         <password>?</password>\r
+         <!--Optional:-->\r
+         <identificativoDominio>?</identificativoDominio>\r
+         <!--Optional:-->\r
+         <rangeDa>?</rangeDa>\r
+         <!--Optional:-->\r
+         <rangeA>?</rangeA>\r
+         <dimensioneLista>?</dimensioneLista>\r
+      </ws:nodoChiediListaPendentiRPT>\r
+   </soapenv:Body>\r
+</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="nodoChiediListaPendentiRPT"/></con:call></con:operation><con:operation id="3b4dc302-765e-4708-8a31-9e590635e0c2" isOneWay="false" action="nodoChiediQuadraturaPA" name="nodoChiediQuadraturaPA" bindingOperationName="nodoChiediQuadraturaPA" type="Request-Response" outputName="nodoChiediQuadraturaPAResponse" inputName="nodoChiediQuadraturaPA" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call id="eef35fb5-abd7-41dd-aaa3-f879b2a70b6a" name="Request 1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://NodoPagamentiSPC.spcoop.gov.it/</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ws="http://ws.pagamenti.telematici.gov/">\r
+   <soapenv:Header/>\r
+   <soapenv:Body>\r
+      <ws:nodoChiediQuadraturaPA>\r
+         <identificativoIntermediarioPA>?</identificativoIntermediarioPA>\r
+         <identificativoStazioneIntermediarioPA>?</identificativoStazioneIntermediarioPA>\r
+         <password>?</password>\r
+         <!--Optional:-->\r
+         <identificativoDominio>?</identificativoDominio>\r
+         <identificativoFlusso>?</identificativoFlusso>\r
+      </ws:nodoChiediQuadraturaPA>\r
+   </soapenv:Body>\r
+</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="nodoChiediQuadraturaPA"/></con:call></con:operation><con:operation id="62512214-0787-499a-8a7d-407385a2c939" isOneWay="false" action="nodoChiediSceltaWISP" name="nodoChiediSceltaWISP" bindingOperationName="nodoChiediSceltaWISP" type="Request-Response" outputName="nodoChiediSceltaWISPResponse" inputName="nodoChiediSceltaWISP" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call id="f1634ec6-4fdd-453f-add7-b961e762f825" name="Request 1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://NodoPagamentiSPC.spcoop.gov.it/</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ws="http://ws.pagamenti.telematici.gov/">\r
+   <soapenv:Header/>\r
+   <soapenv:Body>\r
+      <ws:nodoChiediSceltaWISP>\r
+         <identificativoIntermediarioPA>?</identificativoIntermediarioPA>\r
+         <identificativoStazioneIntermediarioPA>?</identificativoStazioneIntermediarioPA>\r
+         <password>?</password>\r
+         <identificativoDominio>?</identificativoDominio>\r
+         <keyPA>?</keyPA>\r
+         <keyWISP>?</keyWISP>\r
+      </ws:nodoChiediSceltaWISP>\r
+   </soapenv:Body>\r
+</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="nodoChiediSceltaWISP"/></con:call></con:operation><con:operation id="eedc6cbf-3498-4fc0-b159-7f0d1fcbb921" isOneWay="false" action="nodoChiediStatoRPT" name="nodoChiediStatoRPT" bindingOperationName="nodoChiediStatoRPT" type="Request-Response" outputName="nodoChiediStatoRPTResponse" inputName="nodoChiediStatoRPT" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call id="f22d62a1-bdd8-42ac-9096-f736eb6fbfd5" name="Request 1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://NodoPagamentiSPC.spcoop.gov.it/</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ws="http://ws.pagamenti.telematici.gov/">\r
+   <soapenv:Header/>\r
+   <soapenv:Body>\r
+      <ws:nodoChiediStatoRPT>\r
+         <identificativoIntermediarioPA>?</identificativoIntermediarioPA>\r
+         <identificativoStazioneIntermediarioPA>?</identificativoStazioneIntermediarioPA>\r
+         <password>?</password>\r
+         <identificativoDominio>?</identificativoDominio>\r
+         <identificativoUnivocoVersamento>?</identificativoUnivocoVersamento>\r
+         <codiceContestoPagamento>?</codiceContestoPagamento>\r
+      </ws:nodoChiediStatoRPT>\r
+   </soapenv:Body>\r
+</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="nodoChiediStatoRPT"/></con:call></con:operation><con:operation id="d78ad10a-9246-4738-81f3-c7728e9eb510" isOneWay="false" action="nodoInviaCarrelloRPT" name="nodoInviaCarrelloRPT" bindingOperationName="nodoInviaCarrelloRPT" type="Request-Response" outputName="nodoInviaCarrelloRPTResponse" inputName="nodoInviaCarrelloRPT" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call id="be6199dd-1e27-40b0-b06f-8ece4ccd00a4" name="Request 1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://NodoPagamentiSPC.spcoop.gov.it/</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ppt="http://ws.pagamenti.telematici.gov/ppthead" xmlns:ws="http://ws.pagamenti.telematici.gov/">\r
+   <soapenv:Header>\r
+      <ppt:intestazioneCarrelloPPT soapenv:actor="?" soapenv:mustUnderstand="?">\r
+         <identificativoIntermediarioPA>?</identificativoIntermediarioPA>\r
+         <identificativoStazioneIntermediarioPA>?</identificativoStazioneIntermediarioPA>\r
+         <identificativoCarrello>?</identificativoCarrello>\r
+      </ppt:intestazioneCarrelloPPT>\r
+   </soapenv:Header>\r
+   <soapenv:Body>\r
+      <ws:nodoInviaCarrelloRPT>\r
+         <password>?</password>\r
+         <identificativoPSP>?</identificativoPSP>\r
+         <!--Optional:-->\r
+         <identificativoIntermediarioPSP>?</identificativoIntermediarioPSP>\r
+         <!--Optional:-->\r
+         <identificativoCanale>?</identificativoCanale>\r
+         <listaRPT>\r
+            <!--1 or more repetitions:-->\r
+            <elementoListaRPT>\r
+               <identificativoDominio>?</identificativoDominio>\r
+               <identificativoUnivocoVersamento>?</identificativoUnivocoVersamento>\r
+               <codiceContestoPagamento>?</codiceContestoPagamento>\r
+               <!--Optional:-->\r
+               <tipoFirma>?</tipoFirma>\r
+               <rpt>cid:47563879576</rpt>\r
+            </elementoListaRPT>\r
+         </listaRPT>\r
+      </ws:nodoInviaCarrelloRPT>\r
+   </soapenv:Body>\r
+</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="nodoInviaCarrelloRPT"/></con:call></con:operation><con:operation id="5dd9273e-dd99-44c1-afe8-c42224c485f3" isOneWay="false" action="nodoInviaRichiestaStorno" name="nodoInviaRichiestaStorno" bindingOperationName="nodoInviaRichiestaStorno" type="Request-Response" outputName="nodoInviaRichiestaStornoResponse" inputName="nodoInviaRichiestaStorno" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call id="8afac47f-b3fb-4a9b-aa88-a9acaa6f94e2" name="Request 1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://NodoPagamentiSPC.spcoop.gov.it/</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ws="http://ws.pagamenti.telematici.gov/">\r
+   <soapenv:Header/>\r
+   <soapenv:Body>\r
+      <ws:nodoInviaRichiestaStorno>\r
+         <identificativoIntermediarioPA>?</identificativoIntermediarioPA>\r
+         <identificativoStazioneIntermediarioPA>?</identificativoStazioneIntermediarioPA>\r
+         <password>?</password>\r
+         <identificativoDominio>?</identificativoDominio>\r
+         <identificativoUnivocoVersamento>?</identificativoUnivocoVersamento>\r
+         <codiceContestoPagamento>?</codiceContestoPagamento>\r
+         <rr>cid:1306053687800</rr>\r
+      </ws:nodoInviaRichiestaStorno>\r
+   </soapenv:Body>\r
+</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="nodoInviaRichiestaStorno"/></con:call></con:operation><con:operation id="4d1fdb35-6de6-4e21-8473-93b7f49ae19d" isOneWay="false" action="nodoInviaRPT" name="nodoInviaRPT" bindingOperationName="nodoInviaRPT" type="Request-Response" outputName="nodoInviaRPTResponse" inputName="nodoInviaRPT" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call id="8db4e899-5fdf-4d49-99e7-f564ed325464" name="Request 1"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:9000/rpt</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ppt="http://ws.pagamenti.telematici.gov/ppthead" xmlns:ws="http://ws.pagamenti.telematici.gov/">\r
+   <soapenv:Header>\r
+      <ppt:intestazionePPT soapenv:actor="?" soapenv:mustUnderstand="?">\r
+         <identificativoIntermediarioPA>?</identificativoIntermediarioPA>\r
+         <identificativoStazioneIntermediarioPA>?</identificativoStazioneIntermediarioPA>\r
+         <identificativoDominio>?</identificativoDominio>\r
+         <identificativoUnivocoVersamento>?</identificativoUnivocoVersamento>\r
+         <codiceContestoPagamento>?</codiceContestoPagamento>\r
+      </ppt:intestazionePPT>\r
+   </soapenv:Header>\r
+   <soapenv:Body>\r
+      <ws:nodoInviaRPT>\r
+         <password>?</password>\r
+         <identificativoPSP>?</identificativoPSP>\r
+         <!--Optional:-->\r
+         <identificativoIntermediarioPSP>?</identificativoIntermediarioPSP>\r
+         <!--Optional:-->\r
+         <identificativoCanale>?</identificativoCanale>\r
+         <tipoFirma>?</tipoFirma>\r
+         <rpt>cid:620344367469</rpt>\r
+      </ws:nodoInviaRPT>\r
+   </soapenv:Body>\r
+</soapenv:Envelope>]]></con:request><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="nodoInviaRPT"/><con:wsrmConfig version="1.2"/></con:call></con:operation></con:interface><con:interface xsi:type="con:WsdlInterface" id="1fa3a365-ab05-4c9d-8ee5-2e6a810169b7" wsaVersion="NONE" name="PagamentiTelematiciRTbinding" type="wsdl" bindingName="{http://NodoPagamentiSPC.spcoop.gov.it/servizi/PagamentiTelematiciRT}PagamentiTelematiciRTbinding" soapVersion="1_1" anonymous="optional" definition="PaPerNodo.wsdl" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings/><con:definitionCache type="TEXT" rootPart="file:/C:/Users/Utente/IdeaProjects/DemoPrj/src/main/resources/wsdl/ec/PaPerNodo.wsdl"><con:part><con:url>file:/C:/Users/Utente/IdeaProjects/DemoPrj/src/main/resources/wsdl/ec/PaPerNodo.wsdl</con:url><con:content><![CDATA[<!--Questo WSDL rappresenta l'interfaccia esposta dalla PAA
+  per la ricezione delle Ricevute Telematiche-->
+<wsdl:definitions name="PPT" targetNamespace="http://NodoPagamentiSPC.spcoop.gov.it/servizi/PagamentiTelematiciRT" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:ppt="http://ws.pagamenti.telematici.gov/" xmlns:ppthead="http://ws.pagamenti.telematici.gov/ppthead" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://NodoPagamentiSPC.spcoop.gov.it/servizi/PagamentiTelematiciRT">
+  <wsdl:types>
+    <xsd:schema version="1.0" targetNamespace="http://ws.pagamenti.telematici.gov/ppthead">
+      <xsd:simpleType name="stText35">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="1"/>
+          <xsd:maxLength value="35"/>
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:element name="intestazionePPT">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="identificativoIntermediarioPA" type="ppthead:stText35"/>
+            <xsd:element name="identificativoStazioneIntermediarioPA" type="ppthead:stText35"/>
+            <xsd:element name="identificativoDominio" type="ppthead:stText35"/>
+            <xsd:element name="identificativoUnivocoVersamento" type="ppthead:stText35"/>
+            <xsd:element name="codiceContestoPagamento" type="ppthead:stText35"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:schema>
+    <xsd:schema version="1.0" targetNamespace="http://ws.pagamenti.telematici.gov/">
+      <xsd:simpleType name="stText35">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="1"/>
+          <xsd:maxLength value="35"/>
+        </xsd:restriction>
+      </xsd:simpleType>
+      <!--Wrapper Elements-->
+      <xsd:element name="paaInviaRT" type="ppt:paaInviaRT"/>
+      <xsd:element name="paaInviaRTRisposta" type="ppt:paaInviaRTRisposta"/>
+      <xsd:element name="paaInviaEsitoStorno" type="ppt:paaInviaEsitoStorno"/>
+      <xsd:element name="paaInviaEsitoStornoRisposta" type="ppt:paaInviaEsitoStornoRisposta"/>
+      <!--Element Definition-->
+      <xsd:complexType name="paaInviaRT">
+        <xsd:sequence>
+          <xsd:element name="tipoFirma" type="xsd:string"/>
+          <xsd:element name="rt" type="xsd:base64Binary"/>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="paaInviaRTRisposta">
+        <xsd:sequence>
+          <xsd:element name="paaInviaRTRisposta" type="ppt:esitoPaaInviaRT"/>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="esitoPaaInviaRT">
+        <xsd:complexContent>
+          <xsd:extension base="ppt:risposta">
+            <xsd:sequence>
+              <xsd:element name="esito" type="xsd:string" minOccurs="0"/>
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="risposta">
+        <xsd:sequence>
+          <xsd:element name="fault" type="ppt:faultBean" minOccurs="0"/>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="faultBean">
+        <xsd:sequence>
+          <xsd:element name="faultCode" type="xsd:string"/>
+          <xsd:element name="faultString" type="xsd:string"/>
+          <xsd:element name="id" type="xsd:string"/>
+          <xsd:element name="description" type="xsd:string" minOccurs="0"/>
+          <xsd:element name="serial" type="xsd:int" minOccurs="0"/>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="paaInviaEsitoStorno">
+        <xsd:sequence>
+          <xsd:element name="identificativoIntermediarioPA" type="ppt:stText35"/>
+          <xsd:element name="identificativoStazioneIntermediarioPA" type="ppt:stText35"/>
+          <xsd:element name="identificativoDominio" type="ppt:stText35"/>
+          <xsd:element name="identificativoUnivocoVersamento" type="ppt:stText35"/>
+          <xsd:element name="codiceContestoPagamento" type="ppt:stText35"/>
+          <xsd:element name="er" type="xsd:base64Binary"/>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="paaInviaEsitoStornoRisposta">
+        <xsd:sequence>
+          <xsd:element name="paaInviaEsitoStornoRisposta" type="ppt:tipoInviaEsitoStornoRisposta"/>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="tipoInviaEsitoStornoRisposta">
+        <xsd:complexContent>
+          <xsd:extension base="ppt:risposta">
+            <xsd:sequence>
+              <xsd:element name="esito" type="xsd:string" minOccurs="0"/>
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="paaInviaRT">
+    <wsdl:part name="bodyrichiesta" element="ppt:paaInviaRT"/>
+    <wsdl:part name="header" element="ppthead:intestazionePPT"/>
+  </wsdl:message>
+  <wsdl:message name="paaInviaRTResponse">
+    <wsdl:part name="bodyrisposta" element="ppt:paaInviaRTRisposta"/>
+  </wsdl:message>
+  <wsdl:message name="paaInviaEsitoStorno">
+    <wsdl:part name="bodyrichiesta" element="ppt:paaInviaEsitoStorno"/>
+  </wsdl:message>
+  <wsdl:message name="paaInviaEsitoStornoResponse">
+    <wsdl:part name="bodyrisposta" element="ppt:paaInviaEsitoStornoRisposta"/>
+  </wsdl:message>
+  <wsdl:portType name="PagamentiTelematiciRT">
+    <wsdl:operation name="paaInviaRT">
+      <wsdl:input message="tns:paaInviaRT" wsam:Action="http://ws.pagamenti.telematici.gov/PPT/paaInviaRTRichiesta"/>
+      <wsdl:output message="tns:paaInviaRTResponse" wsam:Action="http://ws.pagamenti.telematici.gov/PPT/paaInviaRTRisposta"/>
+    </wsdl:operation>
+    <wsdl:operation name="paaInviaEsitoStorno">
+      <wsdl:input message="tns:paaInviaEsitoStorno" wsam:Action="http://ws.pagamenti.telematici.gov/PPT/paaInviaEsitoStornoRichiesta"/>
+      <wsdl:output message="tns:paaInviaEsitoStornoResponse" wsam:Action="http://ws.pagamenti.telematici.gov/PPT/paaInviaEsitoStornoRisposta"/>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="PagamentiTelematiciRTbinding" type="tns:PagamentiTelematiciRT">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="paaInviaRT">
+      <soap:operation soapAction="paaInviaRT"/>
+      <wsdl:input>
+        <soap:body parts="bodyrichiesta" use="literal"/>
+        <soap:header message="tns:paaInviaRT" part="header" use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="paaInviaEsitoStorno">
+      <soap:operation soapAction="paaInviaEsitoStorno"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="PagamentiTelematiciRTservice">
+    <wsdl:port name="PPTPort" binding="tns:PagamentiTelematiciRTbinding">
+      <soap:address location="http://NodoPagamentiSPC.spcoop.gov.it/"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>]]></con:content><con:type>http://schemas.xmlsoap.org/wsdl/</con:type></con:part></con:definitionCache><con:endpoints><con:endpoint>http://LenovoT430:8088/mockPagamentiTelematiciRTbinding</con:endpoint><con:endpoint>http://NodoPagamentiSPC.spcoop.gov.it/</con:endpoint></con:endpoints><con:operation id="81dd1aff-6adc-45ca-aafd-df81ab11608e" isOneWay="false" action="paaInviaEsitoStorno" name="paaInviaEsitoStorno" bindingOperationName="paaInviaEsitoStorno" type="Request-Response" inputName="" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call id="e073e7a2-b93b-4eb9-ae87-2649ea9d5d48" name="Request 1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://NodoPagamentiSPC.spcoop.gov.it/</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ws="http://ws.pagamenti.telematici.gov/">\r
+   <soapenv:Header/>\r
+   <soapenv:Body>\r
+      <ws:paaInviaEsitoStorno>\r
+         <identificativoIntermediarioPA>?</identificativoIntermediarioPA>\r
+         <identificativoStazioneIntermediarioPA>?</identificativoStazioneIntermediarioPA>\r
+         <identificativoDominio>?</identificativoDominio>\r
+         <identificativoUnivocoVersamento>?</identificativoUnivocoVersamento>\r
+         <codiceContestoPagamento>?</codiceContestoPagamento>\r
+         <er>cid:342249988867</er>\r
+      </ws:paaInviaEsitoStorno>\r
+   </soapenv:Body>\r
+</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="paaInviaEsitoStorno"/></con:call></con:operation><con:operation id="b73a842e-6f17-49c8-a379-ba264f805eab" isOneWay="false" action="paaInviaRT" name="paaInviaRT" bindingOperationName="paaInviaRT" type="Request-Response" inputName="" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call id="ac65ec5e-42b8-44ab-9688-b3efbe74c470" name="Request 1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://NodoPagamentiSPC.spcoop.gov.it/</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ppt="http://ws.pagamenti.telematici.gov/ppthead" xmlns:ws="http://ws.pagamenti.telematici.gov/">\r
+   <soapenv:Header>\r
+      <ppt:intestazionePPT>\r
+         <identificativoIntermediarioPA>?</identificativoIntermediarioPA>\r
+         <identificativoStazioneIntermediarioPA>?</identificativoStazioneIntermediarioPA>\r
+         <identificativoDominio>?</identificativoDominio>\r
+         <identificativoUnivocoVersamento>?</identificativoUnivocoVersamento>\r
+         <codiceContestoPagamento>?</codiceContestoPagamento>\r
+      </ppt:intestazionePPT>\r
+   </soapenv:Header>\r
+   <soapenv:Body>\r
+      <ws:paaInviaRT>\r
+         <tipoFirma>?</tipoFirma>\r
+         <rt>cid:786262466372</rt>\r
+      </ws:paaInviaRT>\r
+   </soapenv:Body>\r
+</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="paaInviaRT"/></con:call></con:operation></con:interface><con:interface xsi:type="con:WsdlInterface" id="643006b8-c0a7-41d6-9fac-ae61c9751a3e" wsaVersion="NONE" name="FespPspBinding" type="wsdl" bindingName="{http://PuntoAccessoPSP.spcoop.gov.it}FespPspBinding" soapVersion="1_1" anonymous="optional" definition="../psp/PspPerNodo.wsdl" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings/><con:definitionCache type="TEXT" rootPart="file:/C:/Users/Utente/IdeaProjects/DemoPrj/src/main/resources/wsdl/psp/PspPerNodo.wsdl"><con:part><con:url>file:/C:/Users/Utente/IdeaProjects/DemoPrj/src/main/resources/wsdl/psp/PspPerNodo.wsdl</con:url><con:content><![CDATA[<!--Questo WSDL rappresenta l'interfaccia esposta dal PSP-->
+<wsdl:definitions name="PSP" targetNamespace="http://PuntoAccessoPSP.spcoop.gov.it" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:wsp="http://www.w3.org/ns/ws-policy" xmlns:wsp1_2="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:ppt="http://ws.pagamenti.telematici.gov/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pay_j="http://www.cnipa.gov.it/schemas/2010/Pagamenti/Ack_1_0/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://PuntoAccessoPSP.spcoop.gov.it">
+  <wsdl:types>
+    <xsd:schema version="1.0" targetNamespace="http://ws.pagamenti.telematici.gov/">
+      <xsd:import schemaLocation="ACK_PagamentiTelematici_6_0_1.xsd" namespace="http://www.cnipa.gov.it/schemas/2010/Pagamenti/Ack_1_0/"/>
+      <xsd:simpleType name="stText35">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="1"/>
+          <xsd:maxLength value="35"/>
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="stModelloPagamento">
+        <xsd:restriction base="xsd:int">
+          <xsd:enumeration value="0"/>
+          <!--Modello di pagamento immediato (con redirezione)-->
+          <xsd:enumeration value="1"/>
+          <!--Modello di pagamento immediato multibeneficiario-->
+          <xsd:enumeration value="2"/>
+          <!--Modello di pagamento differito-->
+          <xsd:enumeration value="4"/>
+          <!--- Modello di pagamento attivato presso il psp-->
+        </xsd:restriction>
+      </xsd:simpleType>
+      <!--Wrapper Elements-->
+      <xsd:element name="pspInviaRPT" type="ppt:pspInviaRPT"/>
+      <xsd:element name="pspInviaRPTResponse" type="ppt:pspInviaRPTResponse"/>
+      <xsd:element name="pspInviaCarrelloRPT" type="ppt:pspInviaCarrelloRPT"/>
+      <xsd:element name="pspInviaCarrelloRPTResponse" type="ppt:pspInviaCarrelloRPTResponse"/>
+      <xsd:element name="pspInviaRichiestaStorno" type="ppt:pspInviaRichiestaStorno"/>
+      <xsd:element name="pspInviaRichiestaStornoResponse" type="ppt:pspInviaRichiestaStornoResponse"/>
+      <xsd:element name="pspChiediRT" type="ppt:pspChiediRT"/>
+      <xsd:element name="pspChiediRTResponse" type="ppt:pspChiediRTResponse"/>
+      <xsd:element name="pspInviaAckRT" type="ppt:pspInviaAckRT"/>
+      <xsd:element name="pspInviaAckRTResponse" type="ppt:pspInviaAckRTResponse"/>
+      <xsd:element name="pspChiediAvanzamentoRPT" type="ppt:pspChiediAvanzamentoRPT"/>
+      <xsd:element name="pspChiediAvanzamentoRPTResponse" type="ppt:pspChiediAvanzamentoRPTResponse"/>
+      <xsd:element name="pspChiediListaRT" type="ppt:pspChiediListaRT"/>
+      <xsd:element name="pspChiediListaRTResponse" type="ppt:pspChiediListaRTResponse"/>
+      <xsd:element name="pspNotificaCancellazioneRPT" type="ppt:pspNotificaCancellazioneRPT"/>
+      <xsd:element name="pspNotificaCancellazioneRPTResponse" type="ppt:pspNotificaCancellazioneRPTResponse"/>
+      <!--Element Definition-->
+      <xsd:complexType name="pspInviaRPT">
+        <xsd:sequence>
+          <xsd:element name="identificativoDominio" type="ppt:stText35"/>
+          <xsd:element name="identificativoPSP" type="ppt:stText35" minOccurs="0"/>
+          <xsd:element name="identificativoIntermediarioPSP" type="ppt:stText35" minOccurs="0"/>
+          <xsd:element name="identificativoCanale" type="ppt:stText35" minOccurs="0"/>
+          <xsd:element name="modelloPagamento" type="ppt:stModelloPagamento" minOccurs="0"/>
+          <xsd:element name="elementoListaRPT" type="ppt:tipoElementoListaRPT" minOccurs="0" maxOccurs="unbounded" nillable="true"/>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="pspInviaRPTResponse">
+        <xsd:sequence>
+          <xsd:element name="pspInviaRPTResponse" type="ppt:esitoPspInviaRPT"/>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="esitoPspInviaRPT">
+        <xsd:sequence>
+          <xsd:element name="esitoComplessivoOperazione" type="xsd:string"/>
+          <xsd:element name="identificativoCarrello" type="ppt:stText35" minOccurs="0"/>
+          <xsd:element name="parametriPagamentoImmediato" type="xsd:string" minOccurs="0"/>
+          <xsd:element name="listaErroriRPT" type="ppt:listaErroriRPT" minOccurs="0"/>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="pspInviaCarrelloRPT">
+        <xsd:sequence>
+          <xsd:element name="identificativoPSP" type="ppt:stText35" minOccurs="0"/>
+          <xsd:element name="identificativoIntermediarioPSP" type="ppt:stText35" minOccurs="0"/>
+          <xsd:element name="identificativoCanale" type="ppt:stText35" minOccurs="0"/>
+          <xsd:element name="modelloPagamento" type="ppt:stModelloPagamento" minOccurs="0"/>
+          <xsd:element name="parametriProfiloPagamento" type="xsd:string" minOccurs="0"/>
+          <xsd:element name="listaRPT" type="ppt:tipoListaRPT"/>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="tipoListaRPT">
+        <xsd:sequence>
+          <xsd:element name="elementoListaCarrelloRPT" type="ppt:tipoElementoListaCarrelloRPT" minOccurs="1" maxOccurs="unbounded"/>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="pspInviaCarrelloRPTResponse">
+        <xsd:sequence>
+          <xsd:element name="pspInviaCarrelloRPTResponse" type="ppt:esitoPspInviaCarrelloRPT"/>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="esitoPspInviaCarrelloRPT">
+        <xsd:complexContent>
+          <xsd:extension base="ppt:risposta">
+            <xsd:sequence>
+              <xsd:element name="esitoComplessivoOperazione" type="xsd:string"/>
+              <xsd:element name="identificativoCarrello" type="ppt:stText35" minOccurs="0"/>
+              <xsd:element name="parametriPagamentoImmediato" type="xsd:string" minOccurs="0"/>
+              <xsd:element name="listaErroriRPT" type="ppt:listaErroriRPT" minOccurs="0"/>
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="risposta">
+        <xsd:sequence>
+          <xsd:element name="fault" type="ppt:faultBean" minOccurs="0"/>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="faultBean">
+        <xsd:sequence>
+          <xsd:element name="faultCode" type="xsd:string"/>
+          <xsd:element name="faultString" type="xsd:string"/>
+          <xsd:element name="id" type="xsd:string"/>
+          <xsd:element name="description" type="xsd:string" minOccurs="0"/>
+          <xsd:element name="serial" type="xsd:int" minOccurs="0"/>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="pspInviaRichiestaStorno">
+        <xsd:sequence>
+          <xsd:element name="identificativoDominio" type="ppt:stText35"/>
+          <xsd:element name="identificativoUnivocoVersamento" type="ppt:stText35"/>
+          <xsd:element name="codiceContestoPagamento" type="ppt:stText35"/>
+          <xsd:element name="rr" type="xsd:base64Binary"/>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="pspInviaRichiestaStornoResponse">
+        <xsd:sequence>
+          <xsd:element name="pspInviaRichiestaStornoResponse" type="ppt:tipoInviaRichiestaStornoResponse"/>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="tipoInviaRichiestaStornoResponse">
+        <xsd:complexContent>
+          <xsd:extension base="ppt:risposta">
+            <xsd:sequence>
+              <xsd:element name="esito" type="xsd:string" minOccurs="0"/>
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="pspChiediRT">
+        <xsd:sequence>
+          <xsd:element name="identificativoDominio" type="ppt:stText35"/>
+          <xsd:element name="identificativoUnivocoVersamento" type="ppt:stText35"/>
+          <xsd:element name="codiceContestoPagamento" type="ppt:stText35"/>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="pspChiediRTResponse">
+        <xsd:sequence>
+          <xsd:element name="pspChiediRTResponse" type="ppt:valoreRT"/>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="valoreRT">
+        <xsd:complexContent>
+          <xsd:extension base="ppt:risposta">
+            <xsd:sequence>
+              <xsd:element name="tipoFirma" type="xsd:string" minOccurs="0"/>
+              <xsd:element name="rt" type="xsd:base64Binary" minOccurs="0"/>
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="pspInviaAckRT">
+        <xsd:sequence>
+          <xsd:element name="identificativoDominio" type="ppt:stText35"/>
+          <xsd:element name="identificativoUnivocoVersamento" type="ppt:stText35"/>
+          <xsd:element name="codiceContestoPagamento" type="ppt:stText35"/>
+          <xsd:element name="ackRT" type="pay_j:ctMessaggioDiAcknowledgement"/>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="pspInviaAckRTResponse">
+        <xsd:sequence>
+          <xsd:element name="pspInviaAckRTResponse" type="ppt:tipoInviaAckRTResponse"/>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="tipoInviaAckRTResponse">
+        <xsd:complexContent>
+          <xsd:extension base="ppt:risposta">
+            <xsd:sequence>
+              <xsd:element name="esito" type="xsd:string" minOccurs="0"/>
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="pspChiediAvanzamentoRPT">
+        <xsd:sequence>
+          <xsd:element name="identificativoDominio" type="ppt:stText35"/>
+          <xsd:element name="identificativoUnivocoVersamento" type="ppt:stText35"/>
+          <xsd:element name="codiceContestoPagamento" type="ppt:stText35"/>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="pspChiediAvanzamentoRPTResponse">
+        <xsd:sequence>
+          <xsd:element name="pspChiediAvanzamentoRPTResponse" type="ppt:valoreAvanzamentoRPT"/>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="valoreAvanzamentoRPT">
+        <xsd:complexContent>
+          <xsd:extension base="ppt:risposta">
+            <xsd:sequence>
+              <xsd:element name="value" type="xsd:string" minOccurs="0"/>
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="pspChiediListaRT">
+        <xsd:sequence>
+          <xsd:element name="identificativoRichiedente" type="ppt:stText35"/>
+          <xsd:element name="identificativoIntermediarioPSP" type="ppt:stText35" minOccurs="0"/>
+          <xsd:element name="identificativoCanale" type="ppt:stText35" minOccurs="0"/>
+          <xsd:element name="modelloPagamento" type="ppt:stModelloPagamento" minOccurs="0"/>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="pspChiediListaRTResponse">
+        <xsd:sequence>
+          <xsd:element name="pspChiediListaRTResponse" type="ppt:chiediListaRTResponse"/>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="chiediListaRTResponse">
+        <xsd:complexContent>
+          <xsd:extension base="ppt:risposta">
+            <xsd:sequence>
+              <xsd:element name="elementoListaRTResponse" type="ppt:valoreListaRT" minOccurs="0" maxOccurs="unbounded" nillable="true"/>
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="valoreListaRT">
+        <xsd:sequence>
+          <xsd:element name="identificativoDominio" type="ppt:stText35"/>
+          <xsd:element name="identificativoUnivocoVersamento" type="ppt:stText35"/>
+          <xsd:element name="codiceContestoPagamento" type="ppt:stText35"/>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="tipoElementoListaRPT">
+        <xsd:sequence>
+          <xsd:element name="identificativoUnivocoVersamento" type="ppt:stText35"/>
+          <xsd:element name="codiceContestoPagamento" type="ppt:stText35"/>
+          <xsd:element name="parametriProfiloPagamento" type="xsd:string" minOccurs="0"/>
+          <xsd:element name="tipoFirma" type="xsd:string" minOccurs="0"/>
+          <xsd:element name="rpt" type="xsd:base64Binary"/>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="tipoElementoListaCarrelloRPT">
+        <xsd:sequence>
+          <xsd:element name="identificativoDominio" type="ppt:stText35"/>
+          <xsd:element name="identificativoUnivocoVersamento" type="ppt:stText35"/>
+          <xsd:element name="codiceContestoPagamento" type="ppt:stText35"/>
+          <xsd:element name="tipoFirma" type="xsd:string" minOccurs="0"/>
+          <xsd:element name="rpt" type="xsd:base64Binary"/>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="listaErroriRPT">
+        <xsd:sequence>
+          <xsd:element name="fault" type="ppt:faultBean" minOccurs="0" maxOccurs="unbounded"/>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="pspNotificaCancellazioneRPT">
+        <xsd:sequence>
+          <xsd:element name="identificativoDominio" type="ppt:stText35"/>
+          <xsd:element name="identificativoUnivocoVersamento" type="ppt:stText35"/>
+          <xsd:element name="codiceContestoPagamento" type="ppt:stText35"/>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="pspNotificaCancellazioneRPTResponse">
+        <xsd:sequence>
+          <xsd:element name="pspNotificaCancellazioneRPTResponse" type="ppt:valoreNotificaCancellazioneRPT"/>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="valoreNotificaCancellazioneRPT">
+        <xsd:complexContent>
+          <xsd:extension base="ppt:risposta">
+            <xsd:sequence>
+              <xsd:element name="esito" type="xsd:string" minOccurs="0"/>
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="pspInviaRPT">
+    <wsdl:part name="bodyRequest" element="ppt:pspInviaRPT"/>
+  </wsdl:message>
+  <wsdl:message name="pspInviaRPTResponse">
+    <wsdl:part name="bodyResponse" element="ppt:pspInviaRPTResponse"/>
+  </wsdl:message>
+  <wsdl:message name="pspInviaCarrelloRPT">
+    <wsdl:part name="bodyRequest" element="ppt:pspInviaCarrelloRPT"/>
+  </wsdl:message>
+  <wsdl:message name="pspInviaCarrelloRPTResponse">
+    <wsdl:part name="bodyResponse" element="ppt:pspInviaCarrelloRPTResponse"/>
+  </wsdl:message>
+  <wsdl:message name="pspChiediRT">
+    <wsdl:part name="bodyRequest" element="ppt:pspChiediRT"/>
+  </wsdl:message>
+  <wsdl:message name="pspChiediRTResponse">
+    <wsdl:part name="bodyResponse" element="ppt:pspChiediRTResponse"/>
+  </wsdl:message>
+  <wsdl:message name="pspInviaAckRT">
+    <wsdl:part name="bodyRequest" element="ppt:pspInviaAckRT"/>
+  </wsdl:message>
+  <wsdl:message name="pspInviaAckRTResponse">
+    <wsdl:part name="bodyResponse" element="ppt:pspInviaAckRTResponse"/>
+  </wsdl:message>
+  <wsdl:message name="pspChiediAvanzamentoRPT">
+    <wsdl:part name="bodyRequest" element="ppt:pspChiediAvanzamentoRPT"/>
+  </wsdl:message>
+  <wsdl:message name="pspChiediAvanzamentoRPTResponse">
+    <wsdl:part name="bodyResponse" element="ppt:pspChiediAvanzamentoRPTResponse"/>
+  </wsdl:message>
+  <wsdl:message name="pspChiediListaRT">
+    <wsdl:part name="bodyRequest" element="ppt:pspChiediListaRT"/>
+  </wsdl:message>
+  <wsdl:message name="pspChiediListaRTResponse">
+    <wsdl:part name="bodyResponse" element="ppt:pspChiediListaRTResponse"/>
+  </wsdl:message>
+  <wsdl:message name="pspNotificaCancellazioneRPT">
+    <wsdl:part name="bodyRequest" element="ppt:pspNotificaCancellazioneRPT"/>
+  </wsdl:message>
+  <wsdl:message name="pspNotificaCancellazioneRPTResponse">
+    <wsdl:part name="bodyResponse" element="ppt:pspNotificaCancellazioneRPTResponse"/>
+  </wsdl:message>
+  <wsdl:message name="pspInviaRichiestaStorno">
+    <wsdl:part name="bodyRequest" element="ppt:pspInviaRichiestaStorno"/>
+  </wsdl:message>
+  <wsdl:message name="pspInviaRichiestaStornoResponse">
+    <wsdl:part name="bodyResponse" element="ppt:pspInviaRichiestaStornoResponse"/>
+  </wsdl:message>
+  <wsdl:portType name="FespPsp">
+    <wsdl:operation name="pspInviaRPT">
+      <wsdl:input message="tns:pspInviaRPT" wsam:Action="http://nodoPSP.fesp.it/ws/FespPsp/PSP/pspInviaRPT"/>
+      <wsdl:output message="tns:pspInviaRPTResponse" wsam:Action="http://nodoPSP.fesp.it/ws/FespPsp/PSP/pspInviaRPTRisposta"/>
+    </wsdl:operation>
+    <wsdl:operation name="pspInviaCarrelloRPT">
+      <wsdl:input message="tns:pspInviaCarrelloRPT" wsam:Action="http://nodoPSP.fesp.it/ws/FespPsp/PSP/pspInviaCarrelloRPT"/>
+      <wsdl:output message="tns:pspInviaCarrelloRPTResponse" wsam:Action="http://nodoPSP.fesp.it/ws/FespPsp/PSP/pspInviaCarrelloRPTRisposta"/>
+    </wsdl:operation>
+    <wsdl:operation name="pspChiediRT">
+      <wsdl:input message="tns:pspChiediRT" wsam:Action="http://nodoPSP.fesp.it/ws/FespPsp/PSP/pspChiediRT"/>
+      <wsdl:output message="tns:pspChiediRTResponse" wsam:Action="http://nodoPSP.fesp.it/ws/FespPsp/PSP/pspChiediRTRisposta"/>
+    </wsdl:operation>
+    <wsdl:operation name="pspInviaAckRT">
+      <wsdl:input message="tns:pspInviaAckRT" wsam:Action="http://nodoPSP.fesp.it/ws/FespPsp/PSP/pspInviaAckRT"/>
+      <wsdl:output message="tns:pspInviaAckRTResponse" wsam:Action="http://nodoPSP.fesp.it/ws/FespPsp/PSP/pspInviaAckRTRisposta"/>
+    </wsdl:operation>
+    <wsdl:operation name="pspChiediAvanzamentoRPT">
+      <wsdl:input message="tns:pspChiediAvanzamentoRPT" wsam:Action="http://nodoPSP.fesp.it/ws/FespPsp/PSP/pspChiediAvanzamentoRPT"/>
+      <wsdl:output message="tns:pspChiediAvanzamentoRPTResponse" wsam:Action="http://nodoPSP.fesp.it/ws/FespPsp/PSP/pspChiediAvanzamentoRPTRisposta"/>
+    </wsdl:operation>
+    <wsdl:operation name="pspChiediListaRT">
+      <wsdl:input message="tns:pspChiediListaRT" wsam:Action="http://nodoPSP.fesp.it/ws/FespPsp/PSP/pspChiediListaRT"/>
+      <wsdl:output message="tns:pspChiediListaRTResponse" wsam:Action="http://nodoPSP.fesp.it/ws/FespPsp/PSP/pspChiediListaRTRisposta"/>
+    </wsdl:operation>
+    <wsdl:operation name="pspNotificaCancellazioneRPT">
+      <wsdl:input message="tns:pspNotificaCancellazioneRPT" wsam:Action="http://nodoPSP.fesp.it/ws/FespPsp/PSP/pspNotificaCancellazioneRPT"/>
+      <wsdl:output message="tns:pspNotificaCancellazioneRPTResponse" wsam:Action="http://nodoPSP.fesp.it/ws/FespPsp/PSP/pspNotificaCancellazioneRPTRisposta"/>
+    </wsdl:operation>
+    <wsdl:operation name="pspInviaRichiestaStorno">
+      <wsdl:input message="tns:pspInviaRichiestaStorno" wsam:Action="http://nodoPSP.fesp.it/ws/FespPsp/PSP/pspInviaRichiestaStorno"/>
+      <wsdl:output message="tns:pspInviaRichiestaStornoResponse" wsam:Action="http://nodoPSP.fesp.it/ws/FespPsp/PSP/pspInviaRichiestaStornoRisposta"/>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="FespPspBinding" type="tns:FespPsp">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="pspInviaRPT">
+      <soap:operation soapAction="pspInviaRPT"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="pspInviaCarrelloRPT">
+      <soap:operation soapAction="pspInviaCarrelloRPT"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="pspChiediRT">
+      <soap:operation soapAction="pspChiediRT"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="pspInviaAckRT">
+      <soap:operation soapAction="pspInviaAckRT"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="pspChiediAvanzamentoRPT">
+      <soap:operation soapAction="pspChiediAvanzamentoRPT"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="pspChiediListaRT">
+      <soap:operation soapAction="pspChiediListaRT"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="pspNotificaCancellazioneRPT">
+      <soap:operation soapAction="pspNotificaCancellazioneRPT"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="pspInviaRichiestaStorno">
+      <soap:operation soapAction="pspInviaRichiestaStorno"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="FespPspService">
+    <wsdl:port name="PSPPort" binding="tns:FespPspBinding">
+      <soap:address location="http://PuntoAccessoPSP.spcoop.gov.it/"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>]]></con:content><con:type>http://schemas.xmlsoap.org/wsdl/</con:type></con:part><con:part><con:url>file:\C:\Users\Utente\IdeaProjects\DemoPrj\src\main\resources\wsdl\psp\ACK_PagamentiTelematici_6_0_1.xsd</con:url><con:content><![CDATA[<xsd:schema targetNamespace="http://www.cnipa.gov.it/schemas/2010/Pagamenti/Ack_1_0/" elementFormDefault="qualified" attributeFormDefault="unqualified" version="6.0.1" xmlns:pay_j="http://www.cnipa.gov.it/schemas/2010/Pagamenti/Ack_1_0/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <!--**** BEGIN: tipi semplici  ****-->
+  <xsd:simpleType name="stISODateTime">
+    <xsd:restriction base="xsd:dateTime"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="stIdentificativoMessaggioReferenziato">
+    <xsd:restriction base="xsd:string">
+      <xsd:maxLength value="35"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="stIdentificativoDominio">
+    <xsd:restriction base="xsd:string">
+      <xsd:maxLength value="35"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="stCodiceContestoPagamento">
+    <xsd:restriction base="xsd:string">
+      <xsd:maxLength value="35"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="stIdentificativoUnivocoVersamento">
+    <xsd:restriction base="xsd:string">
+      <xsd:maxLength value="35"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="stIdentificativoMessaggio">
+    <xsd:restriction base="xsd:string">
+      <xsd:maxLength value="35"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="stMittenteMessaggio">
+    <xsd:restriction base="xsd:string">
+      <xsd:maxLength value="25"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="stTipologiaMessaggioReferenziato">
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="RPT"/>
+      <xsd:enumeration value="RT"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="stStatoMessaggio">
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="ACTC"/>
+      <xsd:enumeration value="RJCT"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="stCodiceErrore">
+    <xsd:restriction base="xsd:string">
+      <xsd:maxLength value="10"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="stElementoReferenziato">
+    <xsd:restriction base="xsd:string">
+      <xsd:maxLength value="140"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="stInformazioniAggiuntive">
+    <xsd:restriction base="xsd:string">
+      <xsd:maxLength value="140"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <!--**** END: tipi semplici  ****-->
+  <!--**** BEGIN: tipi complessi  ****-->
+  <!--Dati relativi al messaggio referenziato-->
+  <xsd:complexType name="ctDatiMessaggioReferenziato">
+    <xsd:sequence>
+      <xsd:element name="identificativoDominio" type="pay_j:stIdentificativoDominio">
+        <xsd:annotation>
+          <xsd:documentation>Campo alfanumerico contenente il codice fiscale della struttura che inoltra la richiesta di pagamento.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="identificativoUnivocoVersamento" type="pay_j:stIdentificativoUnivocoVersamento">
+        <xsd:annotation>
+          <xsd:documentation>Riferimento univoco assegnato al versamento dall’ente beneficiario</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="codiceContestoPagamento" type="pay_j:stCodiceContestoPagamento">
+        <xsd:annotation>
+          <xsd:documentation>Campo alfanumerico contenente il codice contesto di pagamento.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="identificativoMessaggioReferenziato" type="pay_j:stIdentificativoMessaggioReferenziato">
+        <xsd:annotation>
+          <xsd:documentation>Campo alfanumerico contenente l'identificativo del messaggio referenziato, legato alla trasmissione della quietanza telematica.</xsd:documentation>
+          <xsd:documentation>Si riferisce al campo identificativoMessaggio presente nel messaggio di riferimento.</xsd:documentation>
+          <xsd:documentation>Risulta univoco nell’ambito della stessa data riferita all’elemento dataOraMessaggioReferenziato.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="dataOraMessaggioReferenziato" type="pay_j:stISODateTime">
+        <xsd:annotation>
+          <xsd:documentation>Data e ora di generazione del messaggio referenziato secondo il formato ISO 8601</xsd:documentation>
+          <xsd:documentation>[YYYY]-[MM]-[DD]T[hh]:[mm]:[ss]</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="tipologiaMessaggioReferenziato" type="pay_j:stTipologiaMessaggioReferenziato">
+        <xsd:annotation>
+          <xsd:documentation>Tipologia di messaggio referenziato (RPT o RT)</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="mittenteMessaggioReferenziato" type="pay_j:stMittenteMessaggio">
+        <xsd:annotation>
+          <xsd:documentation>Mittente del messaggio al quale l'ACK si riferisce</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <!--Informazioni sullo stato del messaggio referenziato-->
+  <xsd:complexType name="ctStatoDelMessaggioReferenziato">
+    <xsd:sequence>
+      <xsd:element name="statoMessaggioReferenziato" type="pay_j:stStatoMessaggio">
+        <xsd:annotation>
+          <xsd:documentation>Stato del messaggio referenziato.</xsd:documentation>
+          <xsd:documentation>Può assumere i seguenti valori: ACTC (accettato), RJCT (rifiutato).</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="motivazioneStatoErrato" type="pay_j:ctMotivazioneStatoErrato" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>Nel caso di stato rifiutato, dà informazioni riguardo all'errore riscontrato.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <!--Dettagli sullo stato errato del messaggio referenziato-->
+  <xsd:complexType name="ctMotivazioneStatoErrato">
+    <xsd:sequence>
+      <xsd:element name="codiceErrore" type="pay_j:stCodiceErrore">
+        <xsd:annotation>
+          <xsd:documentation>Codice di errore.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="elementoReferenziato" type="pay_j:stElementoReferenziato" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>Elemento sul quale è stato rilevato l'errore.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="InformazioniAggiuntive" type="pay_j:stInformazioniAggiuntive" minOccurs="0" maxOccurs="unbounded">
+        <xsd:annotation>
+          <xsd:documentation>Informazioni aggiuntive sullo stato di errore.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <!--**** END: tipi complessi  ****-->
+  <!--Messaggio di Acknowledgemente della Richiesta Pagamento Telematico (RPT) e della Ricevuta Telematica (RT)-->
+  <xsd:complexType name="ctMessaggioDiAcknowledgement">
+    <xsd:sequence>
+      <xsd:element name="identificativoACK" type="pay_j:stIdentificativoMessaggio">
+        <xsd:annotation>
+          <xsd:documentation>Identificativo legato alla trasmissione del file di ACK</xsd:documentation>
+          <xsd:documentation>Deve essere univoco nell’ambito della stessa data definita da dataOraACK.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="dataOraACK" type="pay_j:stISODateTime">
+        <xsd:annotation>
+          <xsd:documentation>Data e ora di generazione del messaggio di ACK secondo il formato ISO 8601</xsd:documentation>
+          <xsd:documentation>[YYYY]-[MM]-[DD]T[hh]:[mm]:[ss]</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="mittenteACK" type="pay_j:stMittenteMessaggio">
+        <xsd:annotation>
+          <xsd:documentation>Mittente del messaggio di ACK</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="datiMessaggioReferenziato" type="pay_j:ctDatiMessaggioReferenziato">
+        <xsd:annotation>
+          <xsd:documentation>Dati relativi al messaggio referenziato</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="informazioniStatoMessaggioReferenziato" type="pay_j:ctStatoDelMessaggioReferenziato">
+        <xsd:annotation>
+          <xsd:documentation>Informazioni sullo stato del messaggio referenziato</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <!--**** BEGIN: elementi  ****-->
+  <xsd:element name="ACK" type="pay_j:ctMessaggioDiAcknowledgement">
+    <xsd:annotation>
+      <xsd:documentation>Messaggio di acknowledgement</xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <!--**** END: elementi  ****-->
+</xsd:schema>]]></con:content><con:type>http://www.w3.org/2001/XMLSchema</con:type></con:part></con:definitionCache><con:endpoints><con:endpoint>http://LenovoT430:8088/mockFespPspBinding</con:endpoint><con:endpoint>http://PuntoAccessoPSP.spcoop.gov.it/</con:endpoint></con:endpoints><con:operation id="4686d6a8-10f4-45a5-9086-e0a84b7630f8" isOneWay="false" action="pspChiediAvanzamentoRPT" name="pspChiediAvanzamentoRPT" bindingOperationName="pspChiediAvanzamentoRPT" type="Request-Response" inputName="" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call id="5f74bea4-118b-4ee8-b42e-d05ee76a0545" name="Request 1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://PuntoAccessoPSP.spcoop.gov.it/</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ws="http://ws.pagamenti.telematici.gov/">\r
+   <soapenv:Header/>\r
+   <soapenv:Body>\r
+      <ws:pspChiediAvanzamentoRPT>\r
+         <identificativoDominio>?</identificativoDominio>\r
+         <identificativoUnivocoVersamento>?</identificativoUnivocoVersamento>\r
+         <codiceContestoPagamento>?</codiceContestoPagamento>\r
+      </ws:pspChiediAvanzamentoRPT>\r
+   </soapenv:Body>\r
+</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="pspChiediAvanzamentoRPT"/></con:call></con:operation><con:operation id="81b121a0-e399-4120-8a74-a1bc662153b8" isOneWay="false" action="pspChiediListaRT" name="pspChiediListaRT" bindingOperationName="pspChiediListaRT" type="Request-Response" inputName="" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call id="c70ef986-a20c-4778-afbb-13a13dc27900" name="Request 1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://PuntoAccessoPSP.spcoop.gov.it/</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ws="http://ws.pagamenti.telematici.gov/">\r
+   <soapenv:Header/>\r
+   <soapenv:Body>\r
+      <ws:pspChiediListaRT>\r
+         <identificativoRichiedente>?</identificativoRichiedente>\r
+         <!--Optional:-->\r
+         <identificativoIntermediarioPSP>?</identificativoIntermediarioPSP>\r
+         <!--Optional:-->\r
+         <identificativoCanale>?</identificativoCanale>\r
+         <!--Optional:-->\r
+         <modelloPagamento>?</modelloPagamento>\r
+      </ws:pspChiediListaRT>\r
+   </soapenv:Body>\r
+</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="pspChiediListaRT"/></con:call></con:operation><con:operation id="015989aa-b81a-451f-a3ca-6752e8dacf25" isOneWay="false" action="pspChiediRT" name="pspChiediRT" bindingOperationName="pspChiediRT" type="Request-Response" inputName="" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call id="00cfe795-87ae-4b0c-9e0f-9b39ba32fa9a" name="Request 1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://PuntoAccessoPSP.spcoop.gov.it/</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ws="http://ws.pagamenti.telematici.gov/">\r
+   <soapenv:Header/>\r
+   <soapenv:Body>\r
+      <ws:pspChiediRT>\r
+         <identificativoDominio>?</identificativoDominio>\r
+         <identificativoUnivocoVersamento>?</identificativoUnivocoVersamento>\r
+         <codiceContestoPagamento>?</codiceContestoPagamento>\r
+      </ws:pspChiediRT>\r
+   </soapenv:Body>\r
+</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="pspChiediRT"/></con:call></con:operation><con:operation id="dcb23d67-1fcf-4a80-9cef-4adc7c649c06" isOneWay="false" action="pspInviaAckRT" name="pspInviaAckRT" bindingOperationName="pspInviaAckRT" type="Request-Response" inputName="" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call id="34ac9ce6-11d0-494a-a25a-01fd9ba30c13" name="Request 1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://PuntoAccessoPSP.spcoop.gov.it/</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ws="http://ws.pagamenti.telematici.gov/" xmlns:ack="http://www.cnipa.gov.it/schemas/2010/Pagamenti/Ack_1_0/">\r
+   <soapenv:Header/>\r
+   <soapenv:Body>\r
+      <ws:pspInviaAckRT>\r
+         <identificativoDominio>?</identificativoDominio>\r
+         <identificativoUnivocoVersamento>?</identificativoUnivocoVersamento>\r
+         <codiceContestoPagamento>?</codiceContestoPagamento>\r
+         <ackRT>\r
+            <ack:identificativoACK>?</ack:identificativoACK>\r
+            <ack:dataOraACK>?</ack:dataOraACK>\r
+            <ack:mittenteACK>?</ack:mittenteACK>\r
+            <ack:datiMessaggioReferenziato>\r
+               <ack:identificativoDominio>?</ack:identificativoDominio>\r
+               <ack:identificativoUnivocoVersamento>?</ack:identificativoUnivocoVersamento>\r
+               <ack:codiceContestoPagamento>?</ack:codiceContestoPagamento>\r
+               <ack:identificativoMessaggioReferenziato>?</ack:identificativoMessaggioReferenziato>\r
+               <ack:dataOraMessaggioReferenziato>?</ack:dataOraMessaggioReferenziato>\r
+               <ack:tipologiaMessaggioReferenziato>?</ack:tipologiaMessaggioReferenziato>\r
+               <ack:mittenteMessaggioReferenziato>?</ack:mittenteMessaggioReferenziato>\r
+            </ack:datiMessaggioReferenziato>\r
+            <ack:informazioniStatoMessaggioReferenziato>\r
+               <ack:statoMessaggioReferenziato>?</ack:statoMessaggioReferenziato>\r
+               <!--Optional:-->\r
+               <ack:motivazioneStatoErrato>\r
+                  <ack:codiceErrore>?</ack:codiceErrore>\r
+                  <!--Optional:-->\r
+                  <ack:elementoReferenziato>?</ack:elementoReferenziato>\r
+                  <!--Zero or more repetitions:-->\r
+                  <ack:InformazioniAggiuntive>?</ack:InformazioniAggiuntive>\r
+               </ack:motivazioneStatoErrato>\r
+            </ack:informazioniStatoMessaggioReferenziato>\r
+         </ackRT>\r
+      </ws:pspInviaAckRT>\r
+   </soapenv:Body>\r
+</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="pspInviaAckRT"/></con:call></con:operation><con:operation id="80575bed-1b44-4504-96e1-7789e8d1110e" isOneWay="false" action="pspInviaCarrelloRPT" name="pspInviaCarrelloRPT" bindingOperationName="pspInviaCarrelloRPT" type="Request-Response" inputName="" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call id="2f4c874a-e888-4e20-bf54-3a577160d411" name="Request 1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://PuntoAccessoPSP.spcoop.gov.it/</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ws="http://ws.pagamenti.telematici.gov/">\r
+   <soapenv:Header/>\r
+   <soapenv:Body>\r
+      <ws:pspInviaCarrelloRPT>\r
+         <!--Optional:-->\r
+         <identificativoPSP>?</identificativoPSP>\r
+         <!--Optional:-->\r
+         <identificativoIntermediarioPSP>?</identificativoIntermediarioPSP>\r
+         <!--Optional:-->\r
+         <identificativoCanale>?</identificativoCanale>\r
+         <!--Optional:-->\r
+         <modelloPagamento>?</modelloPagamento>\r
+         <!--Optional:-->\r
+         <parametriProfiloPagamento>?</parametriProfiloPagamento>\r
+         <listaRPT>\r
+            <!--1 or more repetitions:-->\r
+            <elementoListaCarrelloRPT>\r
+               <identificativoDominio>?</identificativoDominio>\r
+               <identificativoUnivocoVersamento>?</identificativoUnivocoVersamento>\r
+               <codiceContestoPagamento>?</codiceContestoPagamento>\r
+               <!--Optional:-->\r
+               <tipoFirma>?</tipoFirma>\r
+               <rpt>cid:146248573747</rpt>\r
+            </elementoListaCarrelloRPT>\r
+         </listaRPT>\r
+      </ws:pspInviaCarrelloRPT>\r
+   </soapenv:Body>\r
+</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="pspInviaCarrelloRPT"/></con:call></con:operation><con:operation id="623124bf-0360-492b-936d-7eb91c8f188e" isOneWay="false" action="pspInviaRichiestaStorno" name="pspInviaRichiestaStorno" bindingOperationName="pspInviaRichiestaStorno" type="Request-Response" inputName="" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call id="8e65bb64-ed2a-4492-8993-3339cc79627f" name="Request 1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://PuntoAccessoPSP.spcoop.gov.it/</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ws="http://ws.pagamenti.telematici.gov/">\r
+   <soapenv:Header/>\r
+   <soapenv:Body>\r
+      <ws:pspInviaRichiestaStorno>\r
+         <identificativoDominio>?</identificativoDominio>\r
+         <identificativoUnivocoVersamento>?</identificativoUnivocoVersamento>\r
+         <codiceContestoPagamento>?</codiceContestoPagamento>\r
+         <rr>cid:775347639078</rr>\r
+      </ws:pspInviaRichiestaStorno>\r
+   </soapenv:Body>\r
+</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="pspInviaRichiestaStorno"/></con:call></con:operation><con:operation id="0ec5e85d-4e8a-42a7-bd24-2b17cca1274b" isOneWay="false" action="pspInviaRPT" name="pspInviaRPT" bindingOperationName="pspInviaRPT" type="Request-Response" inputName="" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call id="76d127f7-7779-4edd-9515-42f4c54fceeb" name="Request 1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://PuntoAccessoPSP.spcoop.gov.it/</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ws="http://ws.pagamenti.telematici.gov/">\r
+   <soapenv:Header/>\r
+   <soapenv:Body>\r
+      <ws:pspInviaRPT>\r
+         <identificativoDominio>?</identificativoDominio>\r
+         <!--Optional:-->\r
+         <identificativoPSP>?</identificativoPSP>\r
+         <!--Optional:-->\r
+         <identificativoIntermediarioPSP>?</identificativoIntermediarioPSP>\r
+         <!--Optional:-->\r
+         <identificativoCanale>?</identificativoCanale>\r
+         <!--Optional:-->\r
+         <modelloPagamento>?</modelloPagamento>\r
+         <!--Zero or more repetitions:-->\r
+         <elementoListaRPT>\r
+            <identificativoUnivocoVersamento>?</identificativoUnivocoVersamento>\r
+            <codiceContestoPagamento>?</codiceContestoPagamento>\r
+            <!--Optional:-->\r
+            <parametriProfiloPagamento>?</parametriProfiloPagamento>\r
+            <!--Optional:-->\r
+            <tipoFirma>?</tipoFirma>\r
+            <rpt>cid:1446769031731</rpt>\r
+         </elementoListaRPT>\r
+      </ws:pspInviaRPT>\r
+   </soapenv:Body>\r
+</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="pspInviaRPT"/></con:call></con:operation><con:operation id="7558a271-063d-4148-9e60-80e3d3213269" isOneWay="false" action="pspNotificaCancellazioneRPT" name="pspNotificaCancellazioneRPT" bindingOperationName="pspNotificaCancellazioneRPT" type="Request-Response" inputName="" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call id="3f503034-a9c1-4418-8cc7-94b12623833d" name="Request 1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://PuntoAccessoPSP.spcoop.gov.it/</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ws="http://ws.pagamenti.telematici.gov/">\r
+   <soapenv:Header/>\r
+   <soapenv:Body>\r
+      <ws:pspNotificaCancellazioneRPT>\r
+         <identificativoDominio>?</identificativoDominio>\r
+         <identificativoUnivocoVersamento>?</identificativoUnivocoVersamento>\r
+         <codiceContestoPagamento>?</codiceContestoPagamento>\r
+      </ws:pspNotificaCancellazioneRPT>\r
+   </soapenv:Body>\r
+</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="pspNotificaCancellazioneRPT"/></con:call></con:operation></con:interface><con:testSuite id="9f60bd87-f0f6-44fb-9f6f-a9768bec5983" name="PagamentiTelematiciRPTbinding TestSuite"><con:settings/><con:runType>SEQUENTIAL</con:runType><con:testCase id="1dd8f03e-ff93-415f-b9a8-617532b2a0bc" failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="nodoChiediCopiaRT TestCase" searchProperties="true"><con:settings/><con:testStep type="request" id="06726f57-4d7a-4e6d-b03a-1b942b5e9dae" name="nodoChiediCopiaRT"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>PagamentiTelematiciRPTbinding</con:interface><con:operation>nodoChiediCopiaRT</con:operation><con:request name="nodoChiediCopiaRT" id="c63d57e8-d357-419c-b319-311da81fa1a1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://NodoPagamentiSPC.spcoop.gov.it/</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ws="http://ws.pagamenti.telematici.gov/">\r
+   <soapenv:Header/>\r
+   <soapenv:Body>\r
+      <ws:nodoChiediCopiaRT>\r
+         <identificativoIntermediarioPA>?</identificativoIntermediarioPA>\r
+         <identificativoStazioneIntermediarioPA>?</identificativoStazioneIntermediarioPA>\r
+         <password>?</password>\r
+         <identificativoDominio>?</identificativoDominio>\r
+         <identificativoUnivocoVersamento>?</identificativoUnivocoVersamento>\r
+         <codiceContestoPagamento>?</codiceContestoPagamento>\r
+      </ws:nodoChiediCopiaRT>\r
+   </soapenv:Body>\r
+</soapenv:Envelope>]]></con:request><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:wsaConfig action="nodoChiediCopiaRT"/></con:request></con:config></con:testStep><con:properties/></con:testCase><con:testCase id="d7a072cb-a0f8-48af-9195-85e6e0564f3b" failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="nodoChiediElencoFlussiRendicontazione TestCase" searchProperties="true"><con:settings/><con:testStep type="request" id="eac2db40-60b1-4725-a599-935f4b2ebe42" name="nodoChiediElencoFlussiRendicontazione"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>PagamentiTelematiciRPTbinding</con:interface><con:operation>nodoChiediElencoFlussiRendicontazione</con:operation><con:request name="nodoChiediElencoFlussiRendicontazione" id="45754c71-6f60-4acd-8321-7cc911d6e6e4"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://NodoPagamentiSPC.spcoop.gov.it/</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ws="http://ws.pagamenti.telematici.gov/">\r
+   <soapenv:Header/>\r
+   <soapenv:Body>\r
+      <ws:nodoChiediElencoFlussiRendicontazione>\r
+         <identificativoIntermediarioPA>?</identificativoIntermediarioPA>\r
+         <identificativoStazioneIntermediarioPA>?</identificativoStazioneIntermediarioPA>\r
+         <password>?</password>\r
+         <!--Optional:-->\r
+         <identificativoDominio>?</identificativoDominio>\r
+         <!--Optional:-->\r
+         <identificativoPSP>?</identificativoPSP>\r
+      </ws:nodoChiediElencoFlussiRendicontazione>\r
+   </soapenv:Body>\r
+</soapenv:Envelope>]]></con:request><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:wsaConfig action="nodoChiediElencoFlussiRendicontazione"/></con:request></con:config></con:testStep><con:properties/></con:testCase><con:testCase id="28f75fab-f812-4c56-ac0a-90e357d801f0" failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="nodoChiediElencoQuadraturePA TestCase" searchProperties="true"><con:settings/><con:testStep type="request" id="686e0fae-8d26-4bfd-ab45-a66a1d8b2884" name="nodoChiediElencoQuadraturePA"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>PagamentiTelematiciRPTbinding</con:interface><con:operation>nodoChiediElencoQuadraturePA</con:operation><con:request name="nodoChiediElencoQuadraturePA" id="6821805e-880a-4aac-898b-204db91b5881"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://NodoPagamentiSPC.spcoop.gov.it/</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ws="http://ws.pagamenti.telematici.gov/">\r
+   <soapenv:Header/>\r
+   <soapenv:Body>\r
+      <ws:nodoChiediElencoQuadraturePA>\r
+         <identificativoIntermediarioPA>?</identificativoIntermediarioPA>\r
+         <identificativoStazioneIntermediarioPA>?</identificativoStazioneIntermediarioPA>\r
+         <password>?</password>\r
+         <!--Optional:-->\r
+         <identificativoDominio>?</identificativoDominio>\r
+      </ws:nodoChiediElencoQuadraturePA>\r
+   </soapenv:Body>\r
+</soapenv:Envelope>]]></con:request><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:wsaConfig action="nodoChiediElencoQuadraturePA"/></con:request></con:config></con:testStep><con:properties/></con:testCase><con:testCase id="e5f4fc1a-1761-4d49-a5e8-34514261a674" failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="nodoChiediFlussoRendicontazione TestCase" searchProperties="true"><con:settings/><con:testStep type="request" id="724d7674-34df-4862-83fd-63f27d0b7a1e" name="nodoChiediFlussoRendicontazione"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>PagamentiTelematiciRPTbinding</con:interface><con:operation>nodoChiediFlussoRendicontazione</con:operation><con:request name="nodoChiediFlussoRendicontazione" id="1a5a54cf-14fe-4494-a7ac-47a65e6b4e1a"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://NodoPagamentiSPC.spcoop.gov.it/</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ws="http://ws.pagamenti.telematici.gov/">\r
+   <soapenv:Header/>\r
+   <soapenv:Body>\r
+      <ws:nodoChiediFlussoRendicontazione>\r
+         <identificativoIntermediarioPA>?</identificativoIntermediarioPA>\r
+         <identificativoStazioneIntermediarioPA>?</identificativoStazioneIntermediarioPA>\r
+         <password>?</password>\r
+         <!--Optional:-->\r
+         <identificativoDominio>?</identificativoDominio>\r
+         <!--Optional:-->\r
+         <identificativoPSP>?</identificativoPSP>\r
+         <identificativoFlusso>?</identificativoFlusso>\r
+      </ws:nodoChiediFlussoRendicontazione>\r
+   </soapenv:Body>\r
+</soapenv:Envelope>]]></con:request><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:wsaConfig action="nodoChiediFlussoRendicontazione"/></con:request></con:config></con:testStep><con:properties/></con:testCase><con:testCase id="61715866-b3c4-445e-ab3c-72329e4838a2" failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="nodoChiediInformativaPSP TestCase" searchProperties="true"><con:settings/><con:testStep type="request" id="cfeff00a-40b6-430b-b63c-46a44223cc03" name="nodoChiediInformativaPSP"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>PagamentiTelematiciRPTbinding</con:interface><con:operation>nodoChiediInformativaPSP</con:operation><con:request name="nodoChiediInformativaPSP" id="affc8d5d-f63c-4894-b56f-f58258d95383"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://NodoPagamentiSPC.spcoop.gov.it/</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ws="http://ws.pagamenti.telematici.gov/">\r
+   <soapenv:Header/>\r
+   <soapenv:Body>\r
+      <ws:nodoChiediInformativaPSP>\r
+         <identificativoIntermediarioPA>?</identificativoIntermediarioPA>\r
+         <identificativoStazioneIntermediarioPA>?</identificativoStazioneIntermediarioPA>\r
+         <password>?</password>\r
+         <!--Optional:-->\r
+         <identificativoDominio>?</identificativoDominio>\r
+         <!--Optional:-->\r
+         <identificativoPSP>?</identificativoPSP>\r
+      </ws:nodoChiediInformativaPSP>\r
+   </soapenv:Body>\r
+</soapenv:Envelope>]]></con:request><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:wsaConfig action="nodoChiediInformativaPSP"/></con:request></con:config></con:testStep><con:properties/></con:testCase><con:testCase id="4bf47f9b-6b2d-4f8e-81f4-45fd4f62ebb9" failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="nodoChiediListaPendentiRPT TestCase" searchProperties="true"><con:settings/><con:testStep type="request" id="493f0d58-d1f3-48b7-add0-091246c1c318" name="nodoChiediListaPendentiRPT"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>PagamentiTelematiciRPTbinding</con:interface><con:operation>nodoChiediListaPendentiRPT</con:operation><con:request name="nodoChiediListaPendentiRPT" id="a42e1c8b-2d8d-4700-975a-2f3ba4df7a7e"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://NodoPagamentiSPC.spcoop.gov.it/</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ws="http://ws.pagamenti.telematici.gov/">\r
+   <soapenv:Header/>\r
+   <soapenv:Body>\r
+      <ws:nodoChiediListaPendentiRPT>\r
+         <identificativoIntermediarioPA>?</identificativoIntermediarioPA>\r
+         <identificativoStazioneIntermediarioPA>?</identificativoStazioneIntermediarioPA>\r
+         <password>?</password>\r
+         <!--Optional:-->\r
+         <identificativoDominio>?</identificativoDominio>\r
+         <!--Optional:-->\r
+         <rangeDa>?</rangeDa>\r
+         <!--Optional:-->\r
+         <rangeA>?</rangeA>\r
+         <dimensioneLista>?</dimensioneLista>\r
+      </ws:nodoChiediListaPendentiRPT>\r
+   </soapenv:Body>\r
+</soapenv:Envelope>]]></con:request><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:wsaConfig action="nodoChiediListaPendentiRPT"/></con:request></con:config></con:testStep><con:properties/></con:testCase><con:testCase id="c838ff57-ee64-43ee-970b-7e10a65f5e59" failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="nodoChiediQuadraturaPA TestCase" searchProperties="true"><con:settings/><con:testStep type="request" id="bdc0f695-e7fb-4563-af45-5656710ff3f4" name="nodoChiediQuadraturaPA"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>PagamentiTelematiciRPTbinding</con:interface><con:operation>nodoChiediQuadraturaPA</con:operation><con:request name="nodoChiediQuadraturaPA" id="88436f04-a577-45dd-bbcb-3eca3cbec46c"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://NodoPagamentiSPC.spcoop.gov.it/</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ws="http://ws.pagamenti.telematici.gov/">\r
+   <soapenv:Header/>\r
+   <soapenv:Body>\r
+      <ws:nodoChiediQuadraturaPA>\r
+         <identificativoIntermediarioPA>?</identificativoIntermediarioPA>\r
+         <identificativoStazioneIntermediarioPA>?</identificativoStazioneIntermediarioPA>\r
+         <password>?</password>\r
+         <!--Optional:-->\r
+         <identificativoDominio>?</identificativoDominio>\r
+         <identificativoFlusso>?</identificativoFlusso>\r
+      </ws:nodoChiediQuadraturaPA>\r
+   </soapenv:Body>\r
+</soapenv:Envelope>]]></con:request><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:wsaConfig action="nodoChiediQuadraturaPA"/></con:request></con:config></con:testStep><con:properties/></con:testCase><con:testCase id="90239163-0c1f-47f3-adeb-334434c9731b" failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="nodoChiediSceltaWISP TestCase" searchProperties="true"><con:settings/><con:testStep type="request" id="6302944e-5ffa-47b6-8f7d-36bb1d3b8181" name="nodoChiediSceltaWISP"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>PagamentiTelematiciRPTbinding</con:interface><con:operation>nodoChiediSceltaWISP</con:operation><con:request name="nodoChiediSceltaWISP" id="bc6ff6b1-99bc-48af-9c53-146ee44517fa"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://NodoPagamentiSPC.spcoop.gov.it/</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ws="http://ws.pagamenti.telematici.gov/">\r
+   <soapenv:Header/>\r
+   <soapenv:Body>\r
+      <ws:nodoChiediSceltaWISP>\r
+         <identificativoIntermediarioPA>?</identificativoIntermediarioPA>\r
+         <identificativoStazioneIntermediarioPA>?</identificativoStazioneIntermediarioPA>\r
+         <password>?</password>\r
+         <identificativoDominio>?</identificativoDominio>\r
+         <keyPA>?</keyPA>\r
+         <keyWISP>?</keyWISP>\r
+      </ws:nodoChiediSceltaWISP>\r
+   </soapenv:Body>\r
+</soapenv:Envelope>]]></con:request><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:wsaConfig action="nodoChiediSceltaWISP"/></con:request></con:config></con:testStep><con:properties/></con:testCase><con:testCase id="b1b9e9c3-7cd9-457e-8978-34cc99854780" failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="nodoChiediStatoRPT TestCase" searchProperties="true"><con:settings/><con:testStep type="request" id="d8910abf-8447-40c6-aaa0-5788b560885c" name="nodoChiediStatoRPT"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>PagamentiTelematiciRPTbinding</con:interface><con:operation>nodoChiediStatoRPT</con:operation><con:request name="nodoChiediStatoRPT" id="473ec852-96bc-445d-a063-ea32118b6581"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://NodoPagamentiSPC.spcoop.gov.it/</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ws="http://ws.pagamenti.telematici.gov/">\r
+   <soapenv:Header/>\r
+   <soapenv:Body>\r
+      <ws:nodoChiediStatoRPT>\r
+         <identificativoIntermediarioPA>?</identificativoIntermediarioPA>\r
+         <identificativoStazioneIntermediarioPA>?</identificativoStazioneIntermediarioPA>\r
+         <password>?</password>\r
+         <identificativoDominio>?</identificativoDominio>\r
+         <identificativoUnivocoVersamento>?</identificativoUnivocoVersamento>\r
+         <codiceContestoPagamento>?</codiceContestoPagamento>\r
+      </ws:nodoChiediStatoRPT>\r
+   </soapenv:Body>\r
+</soapenv:Envelope>]]></con:request><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:wsaConfig action="nodoChiediStatoRPT"/></con:request></con:config></con:testStep><con:properties/></con:testCase><con:testCase id="ed3a3455-3da0-4b38-9d6a-2383234cfaa8" failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="nodoInviaCarrelloRPT TestCase" searchProperties="true"><con:settings/><con:testStep type="request" id="99c80b39-88a6-4031-b632-c18d287c4e3e" name="nodoInviaCarrelloRPT"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>PagamentiTelematiciRPTbinding</con:interface><con:operation>nodoInviaCarrelloRPT</con:operation><con:request name="nodoInviaCarrelloRPT" id="37ac42bc-e87d-4fd9-bd16-30ead6b11125"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://NodoPagamentiSPC.spcoop.gov.it/</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ppt="http://ws.pagamenti.telematici.gov/ppthead" xmlns:ws="http://ws.pagamenti.telematici.gov/">\r
+   <soapenv:Header>\r
+      <ppt:intestazioneCarrelloPPT soapenv:actor="?" soapenv:mustUnderstand="?">\r
+         <identificativoIntermediarioPA>?</identificativoIntermediarioPA>\r
+         <identificativoStazioneIntermediarioPA>?</identificativoStazioneIntermediarioPA>\r
+         <identificativoCarrello>?</identificativoCarrello>\r
+      </ppt:intestazioneCarrelloPPT>\r
+   </soapenv:Header>\r
+   <soapenv:Body>\r
+      <ws:nodoInviaCarrelloRPT>\r
+         <password>?</password>\r
+         <identificativoPSP>?</identificativoPSP>\r
+         <!--Optional:-->\r
+         <identificativoIntermediarioPSP>?</identificativoIntermediarioPSP>\r
+         <!--Optional:-->\r
+         <identificativoCanale>?</identificativoCanale>\r
+         <listaRPT>\r
+            <!--1 or more repetitions:-->\r
+            <elementoListaRPT>\r
+               <identificativoDominio>?</identificativoDominio>\r
+               <identificativoUnivocoVersamento>?</identificativoUnivocoVersamento>\r
+               <codiceContestoPagamento>?</codiceContestoPagamento>\r
+               <!--Optional:-->\r
+               <tipoFirma>?</tipoFirma>\r
+               <rpt>cid:583323162273</rpt>\r
+            </elementoListaRPT>\r
+         </listaRPT>\r
+      </ws:nodoInviaCarrelloRPT>\r
+   </soapenv:Body>\r
+</soapenv:Envelope>]]></con:request><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:wsaConfig action="nodoInviaCarrelloRPT"/></con:request></con:config></con:testStep><con:properties/></con:testCase><con:testCase id="7cd6443c-da8a-4b47-822a-6f9ba32579e7" failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="nodoInviaRichiestaStorno TestCase" searchProperties="true"><con:settings/><con:testStep type="request" id="1905773f-7db9-4556-b1dc-3d6d2001fafb" name="nodoInviaRichiestaStorno"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>PagamentiTelematiciRPTbinding</con:interface><con:operation>nodoInviaRichiestaStorno</con:operation><con:request name="nodoInviaRichiestaStorno" id="f674dbe2-03e3-456a-a439-e5c7920d7ffc"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://NodoPagamentiSPC.spcoop.gov.it/</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ws="http://ws.pagamenti.telematici.gov/">\r
+   <soapenv:Header/>\r
+   <soapenv:Body>\r
+      <ws:nodoInviaRichiestaStorno>\r
+         <identificativoIntermediarioPA>?</identificativoIntermediarioPA>\r
+         <identificativoStazioneIntermediarioPA>?</identificativoStazioneIntermediarioPA>\r
+         <password>?</password>\r
+         <identificativoDominio>?</identificativoDominio>\r
+         <identificativoUnivocoVersamento>?</identificativoUnivocoVersamento>\r
+         <codiceContestoPagamento>?</codiceContestoPagamento>\r
+         <rr>cid:600368645825</rr>\r
+      </ws:nodoInviaRichiestaStorno>\r
+   </soapenv:Body>\r
+</soapenv:Envelope>]]></con:request><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:wsaConfig action="nodoInviaRichiestaStorno"/></con:request></con:config></con:testStep><con:properties/></con:testCase><con:testCase id="7488cc26-0344-409e-9771-c6f883ca94b4" failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="nodoInviaRPT TestCase" searchProperties="true"><con:settings/><con:testStep type="request" id="5d1167e6-44a9-45e9-adf0-90323404b22d" name="nodoInviaRPT"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>PagamentiTelematiciRPTbinding</con:interface><con:operation>nodoInviaRPT</con:operation><con:request name="nodoInviaRPT" id="3da3e01d-336c-4f58-8d70-92fb043881d3"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://NodoPagamentiSPC.spcoop.gov.it/</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ppt="http://ws.pagamenti.telematici.gov/ppthead" xmlns:ws="http://ws.pagamenti.telematici.gov/">\r
+   <soapenv:Header>\r
+      <ppt:intestazionePPT soapenv:actor="?" soapenv:mustUnderstand="?">\r
+         <identificativoIntermediarioPA>?</identificativoIntermediarioPA>\r
+         <identificativoStazioneIntermediarioPA>?</identificativoStazioneIntermediarioPA>\r
+         <identificativoDominio>?</identificativoDominio>\r
+         <identificativoUnivocoVersamento>?</identificativoUnivocoVersamento>\r
+         <codiceContestoPagamento>?</codiceContestoPagamento>\r
+      </ppt:intestazionePPT>\r
+   </soapenv:Header>\r
+   <soapenv:Body>\r
+      <ws:nodoInviaRPT>\r
+         <password>?</password>\r
+         <identificativoPSP>?</identificativoPSP>\r
+         <!--Optional:-->\r
+         <identificativoIntermediarioPSP>?</identificativoIntermediarioPSP>\r
+         <!--Optional:-->\r
+         <identificativoCanale>?</identificativoCanale>\r
+         <tipoFirma>?</tipoFirma>\r
+         <rpt>cid:1053426758402</rpt>\r
+      </ws:nodoInviaRPT>\r
+   </soapenv:Body>\r
+</soapenv:Envelope>]]></con:request><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:wsaConfig action="nodoInviaRPT"/></con:request></con:config></con:testStep><con:properties/></con:testCase><con:properties/></con:testSuite><con:mockService id="48b14848-fd30-4dab-bf73-3d23e0507da9" port="8088" path="/mockFespPspBinding" host="LenovoT430" name="FespPspBinding MockService"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.mock.WsdlMockService@require-soap-action">false</con:setting></con:settings><con:properties/><con:mockOperation name="pspChiediAvanzamentoRPT" id="99f71fb5-ee8e-4a0f-9fd9-ce891269dc24" interface="FespPspBinding" operation="pspChiediAvanzamentoRPT"><con:settings/><con:defaultResponse>Response 1</con:defaultResponse><con:dispatchStyle>SEQUENCE</con:dispatchStyle><con:response name="Response 1" id="261ddee7-7892-4c70-b01f-17e781ef9af4" httpResponseStatus="200" encoding="UTF-8"><con:settings/><con:responseContent><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ws="http://ws.pagamenti.telematici.gov/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <ws:pspChiediAvanzamentoRPTResponse>
+         <pspChiediAvanzamentoRPTResponse>
+            <!--Optional:-->
+            <fault>
+               <faultCode>?</faultCode>
+               <faultString>?</faultString>
+               <id>?</id>
+               <!--Optional:-->
+               <description>?</description>
+               <!--Optional:-->
+               <serial>?</serial>
+            </fault>
+            <!--Optional:-->
+            <value>?</value>
+         </pspChiediAvanzamentoRPTResponse>
+      </ws:pspChiediAvanzamentoRPTResponse>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:responseContent><con:wsaConfig mustUnderstand="NONE" version="200508" action="pspChiediAvanzamentoRPT"/></con:response><con:dispatchConfig/></con:mockOperation><con:mockOperation name="pspChiediListaRT" id="10b87d14-cc53-460c-964a-90775d4e718b" interface="FespPspBinding" operation="pspChiediListaRT"><con:settings/><con:defaultResponse>Response 1</con:defaultResponse><con:dispatchStyle>SEQUENCE</con:dispatchStyle><con:response name="Response 1" id="c459279b-3dde-4a4f-898d-78b44b8a66ae" httpResponseStatus="200" encoding="UTF-8"><con:settings/><con:responseContent><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ws="http://ws.pagamenti.telematici.gov/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <ws:pspChiediListaRTResponse>
+         <pspChiediListaRTResponse>
+            <!--Optional:-->
+            <fault>
+               <faultCode>?</faultCode>
+               <faultString>?</faultString>
+               <id>?</id>
+               <!--Optional:-->
+               <description>?</description>
+               <!--Optional:-->
+               <serial>?</serial>
+            </fault>
+            <!--Zero or more repetitions:-->
+            <elementoListaRTResponse>
+               <identificativoDominio>?</identificativoDominio>
+               <identificativoUnivocoVersamento>?</identificativoUnivocoVersamento>
+               <codiceContestoPagamento>?</codiceContestoPagamento>
+            </elementoListaRTResponse>
+         </pspChiediListaRTResponse>
+      </ws:pspChiediListaRTResponse>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:responseContent><con:wsaConfig mustUnderstand="NONE" version="200508" action="pspChiediListaRT"/></con:response><con:dispatchConfig/></con:mockOperation><con:mockOperation name="pspChiediRT" id="e8618aa4-8e05-4e05-9fb2-7e7d65711698" interface="FespPspBinding" operation="pspChiediRT"><con:settings/><con:defaultResponse>Response 1</con:defaultResponse><con:dispatchStyle>SEQUENCE</con:dispatchStyle><con:response name="Response 1" id="4961bad9-d821-4a90-9fa8-0a0a5a67ec27" httpResponseStatus="200" encoding="UTF-8"><con:settings/><con:responseContent><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ws="http://ws.pagamenti.telematici.gov/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <ws:pspChiediRTResponse>
+         <pspChiediRTResponse>
+            <!--Optional:-->
+            <fault>
+               <faultCode>?</faultCode>
+               <faultString>?</faultString>
+               <id>?</id>
+               <!--Optional:-->
+               <description>?</description>
+               <!--Optional:-->
+               <serial>?</serial>
+            </fault>
+            <!--Optional:-->
+            <tipoFirma>?</tipoFirma>
+            <!--Optional:-->
+            <rt>cid:687886087223</rt>
+         </pspChiediRTResponse>
+      </ws:pspChiediRTResponse>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:responseContent><con:wsaConfig mustUnderstand="NONE" version="200508" action="pspChiediRT"/></con:response><con:dispatchConfig/></con:mockOperation><con:mockOperation name="pspInviaAckRT" id="92ef6b48-e19e-41d0-9381-4d07a5710360" interface="FespPspBinding" operation="pspInviaAckRT"><con:settings/><con:defaultResponse>Response 1</con:defaultResponse><con:dispatchStyle>SEQUENCE</con:dispatchStyle><con:response name="Response 1" id="6dbc86ef-dc06-4cd9-98b0-6b45fbbeab52" httpResponseStatus="200" encoding="UTF-8"><con:settings/><con:responseContent><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ws="http://ws.pagamenti.telematici.gov/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <ws:pspInviaAckRTResponse>
+         <pspInviaAckRTResponse>
+            <!--Optional:-->
+            <fault>
+               <faultCode>?</faultCode>
+               <faultString>?</faultString>
+               <id>?</id>
+               <!--Optional:-->
+               <description>?</description>
+               <!--Optional:-->
+               <serial>?</serial>
+            </fault>
+            <!--Optional:-->
+            <esito>?</esito>
+         </pspInviaAckRTResponse>
+      </ws:pspInviaAckRTResponse>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:responseContent><con:wsaConfig mustUnderstand="NONE" version="200508" action="pspInviaAckRT"/></con:response><con:dispatchConfig/></con:mockOperation><con:mockOperation name="pspInviaCarrelloRPT" id="4d054f18-bd89-45c6-8ed5-515718c20961" interface="FespPspBinding" operation="pspInviaCarrelloRPT"><con:settings/><con:defaultResponse>Response 1</con:defaultResponse><con:dispatchStyle>SEQUENCE</con:dispatchStyle><con:response name="Response 1" id="92c2a99d-0fd9-4c4b-bed3-91640a72a845" httpResponseStatus="200" encoding="UTF-8"><con:settings/><con:responseContent><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ws="http://ws.pagamenti.telematici.gov/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <ws:pspInviaCarrelloRPTResponse>
+         <pspInviaCarrelloRPTResponse>
+            <!--Optional:-->
+            <fault>
+               <faultCode>?</faultCode>
+               <faultString>?</faultString>
+               <id>?</id>
+               <!--Optional:-->
+               <description>?</description>
+               <!--Optional:-->
+               <serial>?</serial>
+            </fault>
+            <esitoComplessivoOperazione>?</esitoComplessivoOperazione>
+            <!--Optional:-->
+            <identificativoCarrello>?</identificativoCarrello>
+            <!--Optional:-->
+            <parametriPagamentoImmediato>?</parametriPagamentoImmediato>
+            <!--Optional:-->
+            <listaErroriRPT>
+               <!--Zero or more repetitions:-->
+               <fault>
+                  <faultCode>?</faultCode>
+                  <faultString>?</faultString>
+                  <id>?</id>
+                  <!--Optional:-->
+                  <description>?</description>
+                  <!--Optional:-->
+                  <serial>?</serial>
+               </fault>
+            </listaErroriRPT>
+         </pspInviaCarrelloRPTResponse>
+      </ws:pspInviaCarrelloRPTResponse>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:responseContent><con:wsaConfig mustUnderstand="NONE" version="200508" action="pspInviaCarrelloRPT"/></con:response><con:dispatchConfig/></con:mockOperation><con:mockOperation name="pspInviaRichiestaStorno" id="f6e31e6f-7e21-48dd-ba24-90019872b52d" interface="FespPspBinding" operation="pspInviaRichiestaStorno"><con:settings/><con:defaultResponse>Response 1</con:defaultResponse><con:dispatchStyle>SEQUENCE</con:dispatchStyle><con:response name="Response 1" id="a2e3403b-5208-4456-8191-054e1260beac" httpResponseStatus="200" encoding="UTF-8"><con:settings/><con:responseContent><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ws="http://ws.pagamenti.telematici.gov/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <ws:pspInviaRichiestaStornoResponse>
+         <pspInviaRichiestaStornoResponse>
+            <!--Optional:-->
+            <fault>
+               <faultCode>?</faultCode>
+               <faultString>?</faultString>
+               <id>?</id>
+               <!--Optional:-->
+               <description>?</description>
+               <!--Optional:-->
+               <serial>?</serial>
+            </fault>
+            <!--Optional:-->
+            <esito>?</esito>
+         </pspInviaRichiestaStornoResponse>
+      </ws:pspInviaRichiestaStornoResponse>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:responseContent><con:wsaConfig mustUnderstand="NONE" version="200508" action="pspInviaRichiestaStorno"/></con:response><con:dispatchConfig/></con:mockOperation><con:mockOperation name="pspInviaRPT" id="fda3ca19-4f94-425f-ae2f-f6770a628b70" interface="FespPspBinding" operation="pspInviaRPT"><con:settings/><con:defaultResponse>Response 1</con:defaultResponse><con:dispatchStyle>SEQUENCE</con:dispatchStyle><con:response name="Response 1" id="8934e902-0443-4e3d-a4af-582198262763" httpResponseStatus="200" encoding="UTF-8"><con:settings/><con:responseContent><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ws="http://ws.pagamenti.telematici.gov/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <ws:pspInviaRPTResponse>
+         <pspInviaRPTResponse>
+            <esitoComplessivoOperazione>?</esitoComplessivoOperazione>
+            <!--Optional:-->
+            <identificativoCarrello>?</identificativoCarrello>
+            <!--Optional:-->
+            <parametriPagamentoImmediato>?</parametriPagamentoImmediato>
+            <!--Optional:-->
+            <listaErroriRPT>
+               <!--Zero or more repetitions:-->
+               <fault>
+                  <faultCode>?</faultCode>
+                  <faultString>?</faultString>
+                  <id>?</id>
+                  <!--Optional:-->
+                  <description>?</description>
+                  <!--Optional:-->
+                  <serial>?</serial>
+               </fault>
+            </listaErroriRPT>
+         </pspInviaRPTResponse>
+      </ws:pspInviaRPTResponse>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:responseContent><con:wsaConfig mustUnderstand="NONE" version="200508" action="pspInviaRPT"/></con:response><con:dispatchConfig/></con:mockOperation><con:mockOperation name="pspNotificaCancellazioneRPT" id="af29838c-bef4-47de-b29a-f57922e7cf64" interface="FespPspBinding" operation="pspNotificaCancellazioneRPT"><con:settings/><con:defaultResponse>Response 1</con:defaultResponse><con:dispatchStyle>SEQUENCE</con:dispatchStyle><con:response name="Response 1" id="ffe13b7d-0766-4a48-bfc0-7c32027b8773" httpResponseStatus="200" encoding="UTF-8"><con:settings/><con:responseContent><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ws="http://ws.pagamenti.telematici.gov/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <ws:pspNotificaCancellazioneRPTResponse>
+         <pspNotificaCancellazioneRPTResponse>
+            <!--Optional:-->
+            <fault>
+               <faultCode>?</faultCode>
+               <faultString>?</faultString>
+               <id>?</id>
+               <!--Optional:-->
+               <description>?</description>
+               <!--Optional:-->
+               <serial>?</serial>
+            </fault>
+            <!--Optional:-->
+            <esito>?</esito>
+         </pspNotificaCancellazioneRPTResponse>
+      </ws:pspNotificaCancellazioneRPTResponse>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:responseContent><con:wsaConfig mustUnderstand="NONE" version="200508" action="pspNotificaCancellazioneRPT"/></con:response><con:dispatchConfig/></con:mockOperation></con:mockService><con:mockService id="ae98a479-fd01-4fcd-ba2d-d299426501cc" port="8088" path="/mockPagamentiTelematiciRTbinding" host="LenovoT430" name="PagamentiTelematiciRTbinding MockService"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.mock.WsdlMockService@require-soap-action">false</con:setting></con:settings><con:properties/><con:mockOperation name="paaInviaEsitoStorno" id="e71f9e3b-5bf7-4da3-bd84-6df65aad1cba" interface="PagamentiTelematiciRTbinding" operation="paaInviaEsitoStorno"><con:settings/><con:defaultResponse>Response 1</con:defaultResponse><con:dispatchStyle>SEQUENCE</con:dispatchStyle><con:response name="Response 1" id="87f4b188-1563-4533-af23-b5e476e64e30" httpResponseStatus="200" encoding="UTF-8"><con:settings/><con:responseContent><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ws="http://ws.pagamenti.telematici.gov/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <ws:paaInviaEsitoStornoRisposta>
+         <paaInviaEsitoStornoRisposta>
+            <!--Optional:-->
+            <fault>
+               <faultCode>?</faultCode>
+               <faultString>?</faultString>
+               <id>?</id>
+               <!--Optional:-->
+               <description>?</description>
+               <!--Optional:-->
+               <serial>?</serial>
+            </fault>
+            <!--Optional:-->
+            <esito>?</esito>
+         </paaInviaEsitoStornoRisposta>
+      </ws:paaInviaEsitoStornoRisposta>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:responseContent><con:wsaConfig mustUnderstand="NONE" version="200508" action="paaInviaEsitoStorno"/></con:response><con:dispatchConfig/></con:mockOperation><con:mockOperation name="paaInviaRT" id="1f99ddcc-910c-4831-a2e9-03887df1d8f8" interface="PagamentiTelematiciRTbinding" operation="paaInviaRT"><con:settings/><con:defaultResponse>Response 1</con:defaultResponse><con:dispatchStyle>SEQUENCE</con:dispatchStyle><con:response name="Response 1" id="5e522757-8967-40d0-96ae-f1d3abcff117" httpResponseStatus="200" encoding="UTF-8"><con:settings/><con:responseContent><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ws="http://ws.pagamenti.telematici.gov/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <ws:paaInviaRTRisposta>
+         <paaInviaRTRisposta>
+            <!--Optional:-->
+            <fault>
+               <faultCode>?</faultCode>
+               <faultString>?</faultString>
+               <id>?</id>
+               <!--Optional:-->
+               <description>?</description>
+               <!--Optional:-->
+               <serial>?</serial>
+            </fault>
+            <!--Optional:-->
+            <esito>?</esito>
+         </paaInviaRTRisposta>
+      </ws:paaInviaRTRisposta>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:responseContent><con:wsaConfig mustUnderstand="NONE" version="200508" action="paaInviaRT"/></con:response><con:dispatchConfig/></con:mockOperation></con:mockService><con:properties/><con:wssContainer/><con:oAuth2ProfileContainer/></con:soapui-project>
