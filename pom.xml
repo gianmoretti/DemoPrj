@@ -153,21 +153,36 @@
         </dependency>
     </dependencies>
 
-    <build>
+    <!-- build>
         <plugins>
             <plugin>
                 <groupId>org.apache.cxf</groupId>
                 <artifactId>cxf-codegen-plugin</artifactId>
                 <executions>
                     <execution>
-                        <id>generate-sources</id>
+                        <id>generate-sources-psp</id>
                         <phase>generate-sources</phase>
                         <configuration>
-                            <sourceRoot>${basedir}/target/generated/src/main/java</sourceRoot>
+                            <sourceRoot>${basedir}/target/generated/src/main/java/psp</sourceRoot>
+                            <wsdlOptions>
+                                <wsdlOption>
+                                    <wsdl>${basedir}/src/main/resources/wsdl/psp/PspPerNodo.wsdl</wsdl>
+                                </wsdlOption>
+                            </wsdlOptions>
+                        </configuration>
+                        <goals>
+                            <goal>wsdl2java</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>generate-sources-pa</id>
+                        <phase>generate-sources</phase>
+                        <configuration>
+                            <sourceRoot>${basedir}/target/generated/src/main/java/pa</sourceRoot>
                             <wsdlOptions>
                                 <wsdlOption>
                                     <wsdl>${basedir}/src/main/resources/wsdl/ec/PaPerNodo.wsdl</wsdl>
-                                    <wsdl>${basedir}/src/main/resources/wsdl/psp/PspPerNodo.wsdl</wsdl>
+                                    <wsdl>${basedir}/src/main/resources/wsdl/ec/NodoPerPa.wsdl</wsdl>
                                 </wsdlOption>
                             </wsdlOptions>
                         </configuration>
@@ -178,6 +193,6 @@
                 </executions>
             </plugin>
         </plugins>
-    </build>
+    </build-->
 
 </project>
