@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<con:soapui-project id="886e37c6-924f-4f82-852b-3231b08030e5" activeEnvironment="Default" name="Nodo" resourceRoot="${projectDir}" soapui-version="5.2.1" xmlns:con="http://eviware.com/soapui/config"><con:settings/><con:interface xsi:type="con:WsdlInterface" id="3e847c23-5fda-4a3e-80e2-ae46e071cef0" wsaVersion="NONE" name="PagamentiTelematiciRPTbinding" type="wsdl" bindingName="{http://NodoPagamentiSPC.spcoop.gov.it/servizi/PagamentiTelematiciRPT}PagamentiTelematiciRPTbinding" soapVersion="1_1" anonymous="optional" definition="NodoPerPa.wsdl" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings/><con:definitionCache type="TEXT" rootPart="file:\C:\Users\Utente\IdeaProjects\DemoPrj\src\main\resources\wsdl\ec\NodoPerPa.wsdl"><con:part><con:url>file:\C:\Users\Utente\IdeaProjects\DemoPrj\src\main\resources\wsdl\ec\NodoPerPa.wsdl</con:url><con:content><![CDATA[<!--Questo WSDL rappresenta l'interfaccia esposta dal Nodo dei Pagamenti
+<con:soapui-project id="886e37c6-924f-4f82-852b-3231b08030e5" activeEnvironment="Default" name="Nodo" resourceRoot="${projectDir}" soapui-version="5.2.1" abortOnError="false" runType="SEQUENTIAL" xmlns:con="http://eviware.com/soapui/config"><con:settings/><con:interface xsi:type="con:WsdlInterface" id="3e847c23-5fda-4a3e-80e2-ae46e071cef0" wsaVersion="NONE" name="PagamentiTelematiciRPTbinding" type="wsdl" bindingName="{http://NodoPagamentiSPC.spcoop.gov.it/servizi/PagamentiTelematiciRPT}PagamentiTelematiciRPTbinding" soapVersion="1_1" anonymous="optional" definition="NodoPerPa.wsdl" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings/><con:definitionCache type="TEXT" rootPart="file:\C:\Users\Utente\IdeaProjects\DemoPrj\src\main\resources\wsdl\ec\NodoPerPa.wsdl"><con:part><con:url>file:\C:\Users\Utente\IdeaProjects\DemoPrj\src\main\resources\wsdl\ec\NodoPerPa.wsdl</con:url><con:content><![CDATA[<!--Questo WSDL rappresenta l'interfaccia esposta dal Nodo dei Pagamenti
   per la ricezione delle RPT.
   Versione 6.2.0 di RPT/RT.
   Renaming delle primitive.-->
@@ -930,7 +930,7 @@ The name and trademarks of copyright holders may NOT be used in advertising or p
          <rr>cid:1306053687800</rr>\r
       </ws:nodoInviaRichiestaStorno>\r
    </soapenv:Body>\r
-</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="nodoInviaRichiestaStorno"/></con:call></con:operation><con:operation id="4d1fdb35-6de6-4e21-8473-93b7f49ae19d" isOneWay="false" action="nodoInviaRPT" name="nodoInviaRPT" bindingOperationName="nodoInviaRPT" type="Request-Response" outputName="nodoInviaRPTResponse" inputName="nodoInviaRPT" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call id="8db4e899-5fdf-4d49-99e7-f564ed325464" name="Request 1"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8888/rpt</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ppt="http://ws.pagamenti.telematici.gov/ppthead" xmlns:ws="http://ws.pagamenti.telematici.gov/">\r
+</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="nodoInviaRichiestaStorno"/></con:call></con:operation><con:operation id="4d1fdb35-6de6-4e21-8473-93b7f49ae19d" isOneWay="false" action="nodoInviaRPT" name="nodoInviaRPT" bindingOperationName="nodoInviaRPT" type="Request-Response" outputName="nodoInviaRPTResponse" inputName="nodoInviaRPT" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call id="8db4e899-5fdf-4d49-99e7-f564ed325464" name="Request 1"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8888/helloWorld</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ppt="http://ws.pagamenti.telematici.gov/ppthead" xmlns:ws="http://ws.pagamenti.telematici.gov/">\r
    <soapenv:Header>\r
       <ppt:intestazionePPT soapenv:actor="?" soapenv:mustUnderstand="?">\r
          <identificativoIntermediarioPA>?</identificativoIntermediarioPA>\r
@@ -947,7 +947,7 @@ The name and trademarks of copyright holders may NOT be used in advertising or p
          <!--Optional:-->\r
          <identificativoIntermediarioPSP>?</identificativoIntermediarioPSP>\r
          <!--Optional:-->\r
-         <identificativoCanale>?</identificativoCanale>\r
+         <identificativoCanale>1</identificativoCanale>\r
          <tipoFirma>?</tipoFirma>\r
          <rpt>cid:620344367469</rpt>\r
       </ws:nodoInviaRPT>\r
