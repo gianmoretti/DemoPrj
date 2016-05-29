@@ -13,15 +13,17 @@ import java.util.Properties;
  */
 public class Initializer {
 
-    public static Producer<Integer, String> initializeProducer(String partitionerClass) {
+    public final static String brokerList = "localhost:9092,localhost:9093";
+
+    public static Producer<String, String> initializeProducer(String partitionerClass) {
         Properties producerProps = new Properties();
-        producerProps.put("metadata.broker.list", "localhost:9092");
+        producerProps.put("metadata.broker.list", brokerList);
         producerProps.put("serializer.class", "kafka.serializer.StringEncoder");
         producerProps.put("request.required.acks", "1");
         producerProps.put("partitioner.class", partitionerClass);
 
         ProducerConfig producerConfig = new ProducerConfig(producerProps);
-        return new Producer<Integer, String>(producerConfig);
+        return new Producer<String, String>(producerConfig);
 
     }
 

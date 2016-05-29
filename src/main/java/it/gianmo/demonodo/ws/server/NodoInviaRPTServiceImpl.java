@@ -10,6 +10,8 @@ import javax.jws.WebParam;
 import javax.xml.datatype.XMLGregorianCalendar;
 import javax.xml.ws.Holder;
 import java.math.BigInteger;
+import java.util.Date;
+import java.util.Random;
 
 /**
  * Created by X230 on 23/05/2016.
@@ -20,7 +22,12 @@ public class NodoInviaRPTServiceImpl implements PagamentiTelematiciRPT {
     @Override
     public NodoInviaRPTRisposta nodoInviaRPT(@WebParam(partName = "bodyrichiesta", name = "nodoInviaRPT", targetNamespace = "http://ws.pagamenti.telematici.gov/") NodoInviaRPT bodyrichiesta, @WebParam(partName = "header", name = "intestazionePPT", targetNamespace = "http://ws.pagamenti.telematici.gov/ppthead", header = true) IntestazionePPT header) {
         try {
-            CanaliProducer.getSingleInstance().publishMesssage(new CanaliDTO(bodyrichiesta.getIdentificativoCanale()));
+            Random rnd = new Random();
+            String canaleKey = String.valueOf(rnd.nextInt(10));
+            CanaliDTO canaliDTO = new CanaliDTO(bodyrichiesta.getIdentificativoCanale());
+            String msg =   "canaleKey:" + canaleKey + ", canaleDTO:" + canaliDTO + ", LoginTime: " + new Date();
+            System.out.println(msg);
+            CanaliProducer.getSingleInstance().publishMesssage(canaleKey, canaliDTO);
         } catch (Exception e) {
             e.printStackTrace();
         }
